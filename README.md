@@ -63,11 +63,11 @@ matches where digital coverage is usually missing.
 
 ## 👨‍💻 Team - 4
 
--   **Mayura Patkar** (Reg No: 240970142)\
--   **Biplab Bag Yadav** (Reg No: 240970160)\
--   **Priya R** (Reg No: 240970123)\
--   **Gauri Thakare** (Reg No: 240970133)\
--   **Abhishek Shetty** (Reg No: 240970083)
+-   **Mayura Patkar**
+-   **Abhishek Shetty**
+-   **Gauri Thakare**
+-   **Biplab Bag Yadav**
+-   **Priya R**
 
 ------------------------------------------------------------------------
 
