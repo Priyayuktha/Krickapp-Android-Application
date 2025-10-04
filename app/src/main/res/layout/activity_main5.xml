@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/pageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team Details"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="20dp"/>
+
+    <!-- Toggle Buttons for Team 1 & Team 2 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnTeam1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Team 1"
+            android:backgroundTint="#FFD600"
+            android:textColor="#000000"/>
+
+        <Button
+            android:id="@+id/btnTeam2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Team 2"
+            android:backgroundTint="#E0E0E0"
+            android:textColor="#000000"/>
+    </LinearLayout>
+
+    <!-- Team Name -->
+
+    <!-- Players -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginTop="12dp"
+        android:text="Team Name"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etTeamName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Enter team name"
+        android:padding="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Players (11)"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 1 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 2 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 3 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 4 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 5 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 6 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 7 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 8 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 9 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 10 Name"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etPlayer11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Player 11 Name"
+        android:padding="10dp"/>
+
+    <!-- Back & Save Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:backgroundTint="#FFD600"
+            android:textColor="#000000"
+            android:layout_marginStart="24dp"/>
+    </LinearLayout>
+
+</LinearLayout>
