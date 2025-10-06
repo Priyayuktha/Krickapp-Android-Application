@@ -17,4 +17,11 @@
     <string name="vs">vs</string>
     <string name="team_a_button">Select Team A as toss winner</string>
     <string name="team_b_button">Select Team B as toss winner</string>
+    <string name="back_button">Back</string>
+    <string name="match_info">Match Info</string>
+    <string name="match_title">Warriors vs. Knights</string>
+    <string name="match_subtitle">Local League 2025</string>
+    <string name="add">Add</string>
+    <string name="warriors_vs_knights">Warriors vs. Knights</string>
+    <string name="local_league_2025">Local League 2025</string>
 </resources>
