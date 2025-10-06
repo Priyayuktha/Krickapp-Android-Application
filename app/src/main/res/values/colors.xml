@@ -23,4 +23,28 @@
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
     <color name="text_on_primary">#FFFFFF</color>
-</resources>
+
+        <!-- Default colors -->
+        <color name="purple_200">#BB86FC</color>
+
+
+        <!-- Custom keypad colors -->
+        <color name="keyYellow">#FFD600</color>
+        <color name="keyBlue">#1976D2</color>
+        <color name="keyRed">#D32F2F</color>
+        <color name="keyWhite">#FFFFFF</color>
+        <color name="keyBorder">#CCCCCC</color>
+
+        <!-- Your other colors like purple_200, teal_200, etc. will be here -->
+
+
+        <!-- ADD THIS LINE -->
+        <color name="primary_yellow">#FFEB3B</color>
+
+
+        <!-- You can have other colors defined as well -->
+        <!-- <color name="black">#FF000000</color> -->
+
+        <!-- <color name="white">#FFFFFFFF</color> -->
+    </resources>
+
