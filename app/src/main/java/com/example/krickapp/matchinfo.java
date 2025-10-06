@@ -8,15 +8,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class matchinfo extends AppCompatActivity {
 
-    ImageView btnBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.matchinfo);
 
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        TextView tvTopBar = findViewById(R.id.tvTopBar);
+        tvTopBar.setOnClickListener(v -> finish());
+
 
         // Setup rows with icons + text
         setupRow(R.id.rowMatchType, R.drawable.matchtype, "Match Type", "T20");
