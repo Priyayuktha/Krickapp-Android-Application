@@ -20,7 +20,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Next Player"
+            android:text="@string/select_next_player"
             android:textSize="22sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -42,7 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="PLAYING SQUAD"
+                android:text="@string/playing_squad"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:textColor="#9E9E9E" />
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:background="@drawable/btn_add_player_yellow"
-                android:text="ADD PLAYER"
+                android:text="@string/add_player"
                 android:textAllCaps="true"
                 android:textSize="12sp"
                 android:textColor="#000000" />
@@ -90,6 +90,8 @@
         android:tint="@android:color/white"
         app:layout_anchor="@id/bottom_nav"
         app:layout_anchorGravity="center"
-        app:maxImageSize="40dp" />
+        app:maxImageSize="40dp"
+        android:contentDescription="@string/create_button_description" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

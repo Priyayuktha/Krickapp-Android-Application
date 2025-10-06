@@ -6,4 +6,6 @@
     <string name="playing_squad">PLAYING SQUAD</string>
     <string name="add_player">ADD PLAYER</string>
     <string name="player_icon">Player icon</string>
+    <string name="create_button_description">Create new match or player</string>
+
 </resources>
