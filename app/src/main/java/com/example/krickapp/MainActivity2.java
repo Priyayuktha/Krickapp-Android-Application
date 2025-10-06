@@ -29,7 +29,7 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.reg_account);
 
         // Initialize Firebase Auth and Database
         FirebaseApp.initializeApp(this);
