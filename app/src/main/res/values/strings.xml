@@ -7,5 +7,14 @@
     <string name="add_player">ADD PLAYER</string>
     <string name="player_icon">Player icon</string>
     <string name="create_button_description">Create new match or player</string>
-
+    <string name="who_won_toss">Who won the toss?</string>
+    <string name="team_a">TEAM A</string>
+    <string name="team_b">TEAM B</string>
+    <string name="bat">BAT</string>
+    <string name="bowl">BOWL</string>
+    <string name="save">Save</string>
+    <string name="opted_for">Winner of the toss selected to?</string>
+    <string name="vs">vs</string>
+    <string name="team_a_button">Select Team A as toss winner</string>
+    <string name="team_b_button">Select Team B as toss winner</string>
 </resources>
