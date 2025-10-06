@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Krickapp</string>
+
+    <!-- Your other strings -->
+    <string name="select_next_player">Select Next Player</string>
+    <string name="playing_squad">PLAYING SQUAD</string>
+    <string name="add_player">ADD PLAYER</string>
+    <string name="player_icon">Player icon</string>
 </resources>
