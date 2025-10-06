@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity2 extends AppCompatActivity {
+public class reg_account extends AppCompatActivity {
 
     private EditText etFullName, etEmail, etPassword, etConfirmPassword;
     private FirebaseAuth mAuth; // Firebase Authentication instance
@@ -58,7 +58,7 @@ public class MainActivity2 extends AppCompatActivity {
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
+                Intent intent = new Intent(reg_account.this, login.class);
                 startActivity(intent);
             }
         });
@@ -75,12 +75,12 @@ public class MainActivity2 extends AppCompatActivity {
 
         // Basic input validation
         if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(MainActivity2.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(reg_account.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return; // Stop the function
         }
 
         if (!password.equals(confirmPassword)) {
-            Toast.makeText(MainActivity2.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(reg_account.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return; // Stop the function
         }
 
@@ -96,7 +96,7 @@ public class MainActivity2 extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity2.this, "Authentication failed: " + task.getException().getMessage(),
+                            Toast.makeText(reg_account.this, "Authentication failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
                     }
@@ -113,13 +113,13 @@ public class MainActivity2 extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(MainActivity2.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(reg_account.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
                             // Navigate to Login screen
-                            Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
+                            Intent intent = new Intent(reg_account.this, login.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(MainActivity2.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(reg_account.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 
-public class MainActivity5 extends AppCompatActivity {
+public class reset_password extends AppCompatActivity {
 
     EditText teamName, player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11;
     Button saveBtn;
@@ -66,10 +66,10 @@ public class MainActivity5 extends AppCompatActivity {
 
 
                 if (tName.isEmpty() || p1.isEmpty() || p2.isEmpty() || p3.isEmpty() || p4.isEmpty() || p5.isEmpty()) {
-                    Toast.makeText(MainActivity5.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(reset_password.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 } else {
                     // Here you can save the team details globally or pass them back
-                    Toast.makeText(MainActivity5.this,
+                    Toast.makeText(reset_password.this,
                             "Team " + teamNumber + " saved:\n" + tName,
                             Toast.LENGTH_LONG).show();
 

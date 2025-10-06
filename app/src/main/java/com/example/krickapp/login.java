@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity3 extends AppCompatActivity {
+public class login extends AppCompatActivity {
 
     private EditText etEmailLogin, etPasswordLogin;
     private Button btnLoginSubmit;
@@ -53,12 +53,12 @@ public class MainActivity3 extends AppCompatActivity {
 
         // Forgot password
         tvForgotPassword.setOnClickListener(v ->
-                Toast.makeText(MainActivity3.this, "Forgot Password Clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(login.this, "Forgot Password Clicked", Toast.LENGTH_SHORT).show()
         );
 
         // Go to Create Account
         tvCreateAccount.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+            Intent intent = new Intent(login.this, reg_account.class);
             startActivity(intent);
         });
 
@@ -72,7 +72,7 @@ public class MainActivity3 extends AppCompatActivity {
 
         // Validate input
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(MainActivity3.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(login.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
             return; // Stop the function
         }
 
@@ -83,10 +83,10 @@ public class MainActivity3 extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success
-                            Toast.makeText(MainActivity3.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
                             // Redirect to your app's main dashboard/activity
-                            Intent intent = new Intent(MainActivity3.this, MainActivity4.class);
+                            Intent intent = new Intent(login.this, create_match.class);
                             // Clear the activity stack so the user can't go back to the login screen
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -94,7 +94,7 @@ public class MainActivity3 extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity3.this, "Authentication failed: " + task.getException().getMessage(),
+                            Toast.makeText(login.this, "Authentication failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
                     }

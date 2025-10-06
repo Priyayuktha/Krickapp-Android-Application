@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
-public class MainActivity4 extends AppCompatActivity {
+public class create_match extends AppCompatActivity {
 
     EditText etMatchName, etVenue, etDate, etTime, etMatchType;
     Button btnCancel, btnNext;
@@ -41,7 +41,7 @@ public class MainActivity4 extends AppCompatActivity {
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-            @SuppressLint("SetTextI18n") DatePickerDialog dialog = new DatePickerDialog(MainActivity4.this,
+            @SuppressLint("SetTextI18n") DatePickerDialog dialog = new DatePickerDialog(create_match.this,
                     (DatePicker view, int year1, int month1, int dayOfMonth) -> {
                         etDate.setText(dayOfMonth + "/" + (month1 + 1) + "/" + year1);
                     }, year, month, day);
@@ -54,7 +54,7 @@ public class MainActivity4 extends AppCompatActivity {
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
 
-            @SuppressLint("SetTextI18n") TimePickerDialog dialog = new TimePickerDialog(MainActivity4.this,
+            @SuppressLint("SetTextI18n") TimePickerDialog dialog = new TimePickerDialog(create_match.this,
                     (TimePicker view, int hourOfDay, int minute1) -> {
                         etTime.setText(hourOfDay + ":" + minute1);
                     }, hour, minute, true);
@@ -76,7 +76,7 @@ public class MainActivity4 extends AppCompatActivity {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Pass data to next activity
-                Intent intent = new Intent(MainActivity4.this, MainActivity5.class);
+                Intent intent = new Intent(create_match.this, reset_password.class);
                 intent.putExtra("matchName", matchName);
                 intent.putExtra("venue", venue);
                 intent.putExtra("date", date);
