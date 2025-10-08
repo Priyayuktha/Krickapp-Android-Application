@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.util.Patterns;
 import android.view.View;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
@@ -35,16 +36,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
      * Handles validation and submission logic.
      */
     private void attemptSendInstructions() {
-        // Clear previous error messages
         emailInput.setError(null);
-
-        // Get the email text and trim whitespace
         String email = emailInput.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid email address
         if (email.isEmpty()) {
             emailInput.setError("This field is required");
             focusView = emailInput;
@@ -56,22 +53,28 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
 
         if (cancel) {
-            // There was an error; don't proceed and focus the form field
             focusView.requestFocus();
         } else {
-            // Success logic: The email is valid, proceed with simulated sending
+            // ✅ Use FirebaseAuth to send password reset email
+            FirebaseAuth auth = FirebaseAuth.getInstance();
 
-            // 1. (Real App): Here you would call an API or background task to send the email
-
-            // 2. Display the "Sent Successfully" pop-up using a Toast
-            Toast.makeText(
-                    ResetPasswordActivity.this,
-                    "Email sent successfully! ✅",
-                    Toast.LENGTH_LONG
-            ).show();
-
-            // Optional: Clear the input field after success
-            emailInput.setText("");
+            auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(
+                                    ResetPasswordActivity.this,
+                                    "Reset instructions sent to " + email,
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            emailInput.setText("");
+                        } else {
+                            Toast.makeText(
+                                    ResetPasswordActivity.this,
+                                    "Failed to send reset email. Please check if the email exists.",
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    });
         }
     }
 }
