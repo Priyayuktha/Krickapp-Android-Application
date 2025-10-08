@@ -1,17 +1,25 @@
 package com.example.krickapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Patterns;
 import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.w3c.dom.Text;
+
 public class ResetPasswordActivity extends AppCompatActivity {
 
     private EditText emailInput;
+    private Button b2l;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +29,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         // 1. Get references to the UI elements
         emailInput = findViewById(R.id.input_email);
+        b2l=findViewById(R.id.button);
+
         Button sendInstructionsButton = findViewById(R.id.button_send_instructions);
 
         // 2. Set the click listener for the button
@@ -30,6 +40,18 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 attemptSendInstructions();
             }
         });
+
+       b2l.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent(ResetPasswordActivity.this, login.class);
+               startActivity(intent);
+           }
+       });
+
+
+
+
     }
 
     /**
