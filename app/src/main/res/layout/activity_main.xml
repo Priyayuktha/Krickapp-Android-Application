@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin Profile"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="18dp"
+        android:layout_centerHorizontal="true"/>
+
+    <!-- Avatar + add icon -->
+    <FrameLayout
+        android:id="@+id/avatar_container"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginTop="28dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/avatar_circle_bg"
+            android:contentDescription="Avatar" />
+
+        <ImageView
+            android:id="@+id/ivAddPhoto"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_add_circle_small"
+            android:contentDescription="Add Photo" />
+    </FrameLayout>
+
+    <!-- Name label -->
+    <TextView
+        android:id="@+id/lblName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="13sp"
+        android:textColor="@color/text_primary"
+        android:layout_below="@id/avatar_container"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/lblName"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_input"
+        android:hint="John Doe"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"/>
+
+    <!-- Email -->
+    <TextView
+        android:id="@+id/lblEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="13sp"
+        android:textColor="@color/text_primary"
+        android:layout_below="@id/etName"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/lblEmail"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_input"
+        android:hint="john.doe@example.com"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"/>
+
+    <!-- Password -->
+    <TextView
+        android:id="@+id/lblPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textSize="13sp"
+        android:textColor="@color/text_primary"
+        android:layout_below="@id/etEmail"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/lblPassword"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_input"
+        android:hint="********"
+        android:inputType="textPassword"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"/>
+
+    <!-- Logout button -->
+    <!-- Logout (Yellow) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_below="@id/etPassword"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:backgroundTint="@color/app_yellow"
+        app:cornerRadius="28dp"
+        android:text="Logout"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <!-- Delete Account (Red) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_below="@id/btnLogout"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:backgroundTint="@color/app_red"
+        app:cornerRadius="28dp"
+        android:text="Delete Account"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+
+    <!-- Bottom Navigation -->
+    <RelativeLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:elevation="8dp">
+
+        <!-- Home -->
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Scheduled -->
+        <LinearLayout
+            android:id="@+id/navScheduled"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_toEndOf="@id/navHome"
+            android:layout_marginStart="32dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_schedule" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Matches"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Create Button (center) -->
+        <FrameLayout
+            android:id="@+id/navCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/navCreateImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_add_circle"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="4dp"
+                android:text="Create"
+                android:textSize="12sp"
+                android:layout_marginLeft="10dp"/>
+        </FrameLayout>
+
+        <!-- Live -->
+        <LinearLayout
+            android:id="@+id/navLive"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_toStartOf="@id/navMore"
+            android:layout_marginEnd="32dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_live" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Live"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- More -->
+        <LinearLayout
+            android:id="@+id/navMore"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_more" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
