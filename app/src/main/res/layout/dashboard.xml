@@ -355,26 +355,24 @@
 
         <!-- Scheduled -->
         <LinearLayout
-            android:id="@+id/navScheduled"
+            android:id="@+id/navschedule"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_toEndOf="@id/navHome"
-            android:layout_marginStart="16dp">
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="90dp">
 
             <ImageView
-                android:layout_width="24dp"
+                android:layout_width="34dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/outline_calendar_today_24" />
+                android:src="@drawable/ic_calendar_placeholder"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
                 android:text="Matches"
-                android:textSize="5sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Create Button (center) -->
@@ -428,7 +426,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="dp"
+                android:layout_marginEnd="0dp"
                 android:text="Live"
                 android:textSize="12sp" />
         </LinearLayout>
