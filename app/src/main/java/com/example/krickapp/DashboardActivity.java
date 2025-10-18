@@ -45,8 +45,7 @@ public class DashboardActivity extends AppCompatActivity {
                 // Already on home
                 return true;
             } else if (itemId == R.id.nav_matches) {
-                Toast.makeText(DashboardActivity.this, "Matches", Toast.LENGTH_SHORT).show();
-                // Navigate to matches activity when created
+                startActivity(new Intent(DashboardActivity.this, MatchesListActivity.class));
                 return true;
             } else if (itemId == R.id.nav_live) {
                 // Navigate to create match or live scoring

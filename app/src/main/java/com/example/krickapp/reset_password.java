@@ -3,6 +3,8 @@ package com.example.krickapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,6 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class reset_password extends AppCompatActivity {
 
@@ -22,12 +31,35 @@ public class reset_password extends AppCompatActivity {
     String team1Name = "", team2Name = "";
     String[] team1Players = new String[11];
     String[] team2Players = new String[11];
+    
+    // Firebase
+    private DatabaseReference mDatabase;
+    private ProgressDialog progressDialog;
+    
+    // Match data from previous activity
+    private String matchName, venue, date, time, matchType;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_details);
+
+        // Initialize Firebase
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        
+        // Initialize ProgressDialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Saving match...");
+        progressDialog.setCancelable(false);
+        
+        // Get match data from previous activity
+        Intent intent = getIntent();
+        matchName = intent.getStringExtra("matchName");
+        venue = intent.getStringExtra("venue");
+        date = intent.getStringExtra("date");
+        time = intent.getStringExtra("time");
+        matchType = intent.getStringExtra("matchType");
 
         // Initialize views
         teamName = findViewById(R.id.etTeamName);
@@ -71,19 +103,7 @@ public class reset_password extends AppCompatActivity {
 
         // Save button click
         saveBtn.setOnClickListener(v -> {
-            saveCurrentTeamData();
-            
-            if (validateAllData()) {
-                Toast.makeText(reset_password.this, 
-                    "Both teams saved successfully!", 
-                    Toast.LENGTH_LONG).show();
-                // TODO: Save to Firebase and navigate to next screen
-                finish();
-            } else {
-                Toast.makeText(reset_password.this, 
-                    "Please complete both team details", 
-                    Toast.LENGTH_SHORT).show();
-            }
+            saveMatchToFirebase();
         });
         
         // Initialize button colors
@@ -171,5 +191,83 @@ public class reset_password extends AppCompatActivity {
             team2Players[10] != null && !team2Players[10].isEmpty();
             
         return team1Valid && team2Valid;
+    }
+    
+    private void saveMatchToFirebase() {
+        saveCurrentTeamData();
+        
+        if (!validateAllData()) {
+            Toast.makeText(this, "Please complete both team details", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Show progress
+        progressDialog.show();
+        
+        // Get current user
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String creatorId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "unknown";
+        
+        // Create unique match ID
+        String matchId = mDatabase.child("matches").push().getKey();
+        
+        if (matchId == null) {
+            progressDialog.dismiss();
+            Toast.makeText(this, "Failed to generate match ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Create match object
+        Map<String, Object> match = new HashMap<>();
+        match.put("matchName", matchName != null ? matchName : "");
+        match.put("venue", venue != null ? venue : "");
+        match.put("date", date != null ? date : "");
+        match.put("time", time != null ? time : "");
+        match.put("matchType", matchType != null ? matchType : "");
+        match.put("status", "scheduled");
+        match.put("createdBy", creatorId);
+        match.put("createdAt", System.currentTimeMillis());
+        
+        // Team 1 data
+        Map<String, Object> team1Data = new HashMap<>();
+        team1Data.put("name", team1Name);
+        Map<String, String> team1PlayersList = new HashMap<>();
+        for (int i = 0; i < 11; i++) {
+            if (team1Players[i] != null && !team1Players[i].isEmpty()) {
+                team1PlayersList.put("player" + (i + 1), team1Players[i]);
+            }
+        }
+        team1Data.put("players", team1PlayersList);
+        match.put("team1", team1Data);
+        
+        // Team 2 data
+        Map<String, Object> team2Data = new HashMap<>();
+        team2Data.put("name", team2Name);
+        Map<String, String> team2PlayersList = new HashMap<>();
+        for (int i = 0; i < 11; i++) {
+            if (team2Players[i] != null && !team2Players[i].isEmpty()) {
+                team2PlayersList.put("player" + (i + 1), team2Players[i]);
+            }
+        }
+        team2Data.put("players", team2PlayersList);
+        match.put("team2", team2Data);
+        
+        // Save to Firebase
+        mDatabase.child("matches").child(matchId).setValue(match)
+            .addOnCompleteListener(task -> {
+                progressDialog.dismiss();
+                if (task.isSuccessful()) {
+                    Toast.makeText(this, "Match created successfully!", Toast.LENGTH_SHORT).show();
+                    // Navigate back to dashboard
+                    Intent intent = new Intent(reset_password.this, DashboardActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(this, "Failed to save match: " + 
+                        (task.getException() != null ? task.getException().getMessage() : "Unknown error"), 
+                        Toast.LENGTH_LONG).show();
+                }
+            });
     }
 }

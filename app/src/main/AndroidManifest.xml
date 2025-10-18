@@ -27,6 +27,7 @@
         <activity android:name=".reset_password" />
         <activity android:name=".DashboardActivity" />
         <activity android:name=".TeamSelectionActivity" />
+        <activity android:name=".MatchesListActivity" />
     </application>
 
 </manifest>
