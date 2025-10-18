@@ -1,8 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_home" android:icon="@drawable/ic_home" android:title="Home"/>
-    <item android:id="@+id/menu_matches" android:icon="@drawable/calendar" android:title="Matches"/>
-    <!--  Center FAB will overlap Create  -->
-    <item android:id="@+id/menu_placeholder" android:enabled="false" android:title="Create"/>
-    <item android:id="@+id/menu_live" android:icon="@drawable/live" android:title="Live"/>
-    <item android:id="@+id/menu_more" android:icon="@drawable/more" android:title="More"/>
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/admin_ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_matches"
+        android:icon="@drawable/ic_calendar_placeholder"
+        android:title="Matches" />
+
+    <item
+        android:id="@+id/nav_placeholder"
+        android:title=""
+        android:enabled="false" />
+
+    <item
+        android:id="@+id/nav_live"
+        android:icon="@drawable/admin_ic_live"
+        android:title="Live" />
+    <item
+        android:id="@+id/nav_more"
+        android:icon="@drawable/admin_ic_more"
+        android:title="More" />
 </menu>

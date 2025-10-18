@@ -1,16 +1,25 @@
 package com.example.krickapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Patterns;
 import android.view.View;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
     private EditText emailInput;
+    private Button b2l;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +29,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         // 1. Get references to the UI elements
         emailInput = findViewById(R.id.input_email);
+        b2l=findViewById(R.id.button);
+
         Button sendInstructionsButton = findViewById(R.id.button_send_instructions);
 
         // 2. Set the click listener for the button
@@ -29,22 +40,30 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 attemptSendInstructions();
             }
         });
+
+       b2l.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent(ResetPasswordActivity.this, login.class);
+               startActivity(intent);
+           }
+       });
+
+
+
+
     }
 
     /**
      * Handles validation and submission logic.
      */
     private void attemptSendInstructions() {
-        // Clear previous error messages
         emailInput.setError(null);
-
-        // Get the email text and trim whitespace
         String email = emailInput.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid email address
         if (email.isEmpty()) {
             emailInput.setError("This field is required");
             focusView = emailInput;
@@ -56,22 +75,28 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
 
         if (cancel) {
-            // There was an error; don't proceed and focus the form field
             focusView.requestFocus();
         } else {
-            // Success logic: The email is valid, proceed with simulated sending
+            // ✅ Use FirebaseAuth to send password reset email
+            FirebaseAuth auth = FirebaseAuth.getInstance();
 
-            // 1. (Real App): Here you would call an API or background task to send the email
-
-            // 2. Display the "Sent Successfully" pop-up using a Toast
-            Toast.makeText(
-                    ResetPasswordActivity.this,
-                    "Email sent successfully! ✅",
-                    Toast.LENGTH_LONG
-            ).show();
-
-            // Optional: Clear the input field after success
-            emailInput.setText("");
+            auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(
+                                    ResetPasswordActivity.this,
+                                    "Reset instructions sent to " + email,
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            emailInput.setText("");
+                        } else {
+                            Toast.makeText(
+                                    ResetPasswordActivity.this,
+                                    "Failed to send reset email. Please check if the email exists.",
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    });
         }
     }
 }
