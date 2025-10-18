@@ -75,8 +75,8 @@ public class create_match extends AppCompatActivity {
             if (matchName.isEmpty() || venue.isEmpty() || date.isEmpty() || time.isEmpty() || matchType.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
-                // Pass data to next activity
-                Intent intent = new Intent(create_match.this, reset_password.class);
+                // Pass data to team selection activity
+                Intent intent = new Intent(create_match.this, TeamSelectionActivity.class);
                 intent.putExtra("matchName", matchName);
                 intent.putExtra("venue", venue);
                 intent.putExtra("date", date);

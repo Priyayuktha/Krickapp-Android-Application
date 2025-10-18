@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+            <!-- Other colors... -->
+            <color name="nav_item_color">#000000</color>
 </resources>

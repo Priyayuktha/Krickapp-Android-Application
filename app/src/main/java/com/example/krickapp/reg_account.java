@@ -113,7 +113,7 @@ public class reg_account extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(reg_account.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(reg_account.this, login.class));
+                            startActivity(new Intent(reg_account.this, MainActivity.class));
                             finish();
                         } else {
                             Toast.makeText(reg_account.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();

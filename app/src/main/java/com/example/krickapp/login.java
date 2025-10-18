@@ -97,7 +97,7 @@ public class login extends AppCompatActivity {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         Toast.makeText(login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(login.this, create_match.class);
+                        Intent intent = new Intent(login.this, DashboardActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();

@@ -23,6 +23,10 @@
         <activity android:name=".reg_account" />
         <activity android:name=".login" />
         <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".create_match" />
+        <activity android:name=".reset_password" />
+        <activity android:name=".DashboardActivity" />
+        <activity android:name=".TeamSelectionActivity" />
     </application>
 
 </manifest>
