@@ -1,5 +1,6 @@
 package com.example.krickapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ImageView profileIcon;
     private CardView createMatchCard;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,17 +49,21 @@ public class DashboardActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             
-            if (itemId == R.id.nav_home) {
+            if (itemId == R.id.navHome) {
                 // Already on home
                 return true;
-            } else if (itemId == R.id.nav_matches) {
+            } else if (itemId == R.id.navschedule) {
                 startActivity(new Intent(DashboardActivity.this, MatchesListActivity.class));
                 return true;
-            } else if (itemId == R.id.nav_live) {
-                // Navigate to create match or live scoring
+            } else if (itemId == R.id.navCreate) {
+                // Navigate to create match
                 startActivity(new Intent(DashboardActivity.this, create_match.class));
                 return true;
-            } else if (itemId == R.id.nav_more) {
+            } else if (itemId == R.id.navLive) {
+                Toast.makeText(DashboardActivity.this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
+                // Navigate to live scoring activity when created
+                return true;
+            } else if (itemId == R.id.navMore) {
                 Toast.makeText(DashboardActivity.this, "More", Toast.LENGTH_SHORT).show();
                 // Navigate to more/settings activity when created
                 return true;
@@ -69,6 +75,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Prevent going back to login screen
+        super.onBackPressed();
         moveTaskToBack(true);
     }
     

@@ -2,43 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_home"
-        android:title="Home"
-        android:icon="@drawable/ic_home" />  <!-- You'll need to provide an icon -->
-
+        android:id="@+id/navHome"
+        android:icon="@drawable/admin_ic_home"
+        android:title="Home" />
+    
     <item
-        android:id="@+id/menu_matches"
-        android:title="Matches"
-        android:icon="@drawable/ic_matches" /> <!-- You'll need to provide an icon -->
-
+        android:id="@+id/navschedule"
+        android:icon="@drawable/ic_calendar_placeholder"
+        android:title="Matches" />
+    
     <item
-        android:id="@+id/menu_live"
-        android:title="Live"
-        android:icon="@drawable/ic_live" />   <!-- You'll need to provide an icon -->
-
+        android:id="@+id/navCreate"
+        android:icon="@drawable/outline_add_24"
+        android:title="Create" />
+    
     <item
-        android:id="@+id/menu_more"
-        android:title="More"
-        android:icon="@drawable/ic_more" />   <!-- You'll need to provide an icon -->
-
+        android:id="@+id/navLive"
+        android:icon="@drawable/outline_app_badging_24"
+        android:title="Live" />
+    
     <item
-        android:id="@+id/nav_home"
-        android:title="Home"
-        android:icon="@drawable/ic_home" />
-
-    <item
-        android:id="@+id/nav_matches"
-    android:title="Matches"
-    android:icon="@drawable/ic_matches" />
-
-    <item
-        android:id="@+id/nav_live"
-        android:title="Live"
-        android:icon="@drawable/ic_live" />
-
-    <item
-        android:id="@+id/nav_more"
-        android:title="More"
-        android:icon="@drawable/ic_more" />
+        android:id="@+id/navMore"
+        android:icon="@drawable/more"
+        android:title="More" />
 
 </menu>

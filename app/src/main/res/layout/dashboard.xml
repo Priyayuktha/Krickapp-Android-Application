@@ -320,138 +320,18 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Custom Bottom Navigation -->
-    <RelativeLayout
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:elevation="8dp"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@android:color/black"
+        app:itemTextColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- Home -->
-        <LinearLayout
-            android:id="@+id/navHome"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="16dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/admin_ic_home" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Scheduled -->
-        <LinearLayout
-            android:id="@+id/navschedule"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="90dp">
-
-            <ImageView
-                android:layout_width="34dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_calendar_placeholder"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Matches"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Create Button (center) -->
-        <FrameLayout
-            android:id="@+id/navCreate"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
-            android:layout_centerHorizontal="true">
-
-
-
-            <ImageView
-                android:id="@+id/navCreateImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/outline_add_24"
-                android:background="@drawable/yellow_circle"
-                android:padding="16dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="0dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="10dp"/>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginBottom="4dp"
-                android:text="Create"
-                android:layout_marginStart="10dp"
-                android:textSize="12sp"/>
-        </FrameLayout>
-
-        <!-- Live -->
-        <LinearLayout
-            android:id="@+id/navLive"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginEnd="50dp"
-            android:layout_toStartOf="@id/navMore">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-
-                android:src="@drawable/outline_app_badging_24" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:text="Live"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- More -->
-        <LinearLayout
-            android:id="@+id/navMore"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="16dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/more" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="More"
-                android:textSize="12sp" />
-        </LinearLayout>
-    </RelativeLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

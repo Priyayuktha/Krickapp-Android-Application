@@ -1,6 +1,7 @@
 package com.example.krickapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -74,17 +75,20 @@ public class tossresult extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
 
-            if (id == R.id.menu_home) {
-                Toast.makeText(this, "Home clicked", Toast.LENGTH_SHORT).show();
+            if (id == R.id.navHome) {
+                startActivity(new Intent(tossresult.this, DashboardActivity.class));
                 return true;
-            } else if (id == R.id.menu_matches) {
-                Toast.makeText(this, "Matches clicked", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.navschedule) {
+                startActivity(new Intent(tossresult.this, MatchesListActivity.class));
                 return true;
-            } else if (id == R.id.menu_live) {
-                Toast.makeText(this, "Live clicked", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.navCreate) {
+                startActivity(new Intent(tossresult.this, create_match.class));
                 return true;
-            } else if (id == R.id.menu_more) {
-                Toast.makeText(this, "More clicked", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.navLive) {
+                Toast.makeText(this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.navMore) {
+                Toast.makeText(this, "More", Toast.LENGTH_SHORT).show();
                 return true;
             }
 

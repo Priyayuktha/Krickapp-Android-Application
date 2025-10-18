@@ -1,6 +1,7 @@
 package com.example.krickapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -101,16 +102,19 @@ public class matchresult extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.menu_home) {
-                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+            if (id == R.id.navHome) {
+                startActivity(new Intent(matchresult.this, DashboardActivity.class));
                 return true;
-            } else if (id == R.id.menu_matches) {
-                Toast.makeText(this, "Matches", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.navschedule) {
+                startActivity(new Intent(matchresult.this, MatchesListActivity.class));
                 return true;
-            } else if (id == R.id.menu_live) {
-                Toast.makeText(this, "Live", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.navCreate) {
+                startActivity(new Intent(matchresult.this, create_match.class));
                 return true;
-            } else if (id == R.id.menu_more) {
+            } else if (id == R.id.navLive) {
+                Toast.makeText(this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.navMore) {
                 Toast.makeText(this, "More", Toast.LENGTH_SHORT).show();
                 return true;
             }
