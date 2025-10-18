@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:title="Home"
+        android:icon="@drawable/ic_home" />
+
+    <item
+        android:id="@+id/nav_matches"
+        android:title="Matches"
+        android:icon="@drawable/ic_live" />
+
+    <item
+        android:id="@+id/nav_create"
+        android:title="Create"
+        android:icon="@drawable/ic_add_circle" />
+
+    <item
+        android:id="@+id/nav_live"
+        android:title="Live"
+        android:icon="@drawable/ic_live" />
+
+    <item
+        android:id="@+id/nav_more"
+        android:title="More"
+        android:icon="@drawable/ic_more" />
+
+</menu>
