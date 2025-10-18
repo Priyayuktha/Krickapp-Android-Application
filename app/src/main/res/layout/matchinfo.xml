@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Top Bar -->
+        <TextView
+            android:id="@+id/tvTopBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/backarrow"
+            android:drawablePadding="8dp"
+            android:text="@string/match_info"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="16dp"
+            app:drawableTint="@color/black"
+            android:contentDescription="@string/back_button" />
+
+        <!-- Card with match info -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Header -->
+                <TextView
+                    android:id="@+id/tvMatchTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/warriors_vs_knights"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/local_league_2025"
+                    android:textSize="14sp"
+                    android:textColor="#777"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Rows -->
+                <include layout="@layout/row_match_info" android:id="@+id/rowMatchType"/>
+                <include layout="@layout/row_match_info" android:id="@+id/rowDate"/>
+                <include layout="@layout/row_match_info" android:id="@+id/rowTime"/>
+                <include layout="@layout/row_match_info" android:id="@+id/rowVenue"/>
+                <include layout="@layout/row_match_info" android:id="@+id/rowCity"/>
+                <include layout="@layout/row_match_info" android:id="@+id/rowToss"/>
+                <include layout="@layout/row_match_info" android:id="@+id/rowHost"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled"
+        android:background="@android:color/white" />
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_create"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        app:backgroundTint="#FFD600"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
+        app:layout_anchor="@id/bottom_nav"
+        app:layout_anchorGravity="center"
+        app:maxImageSize="40dp"
+        android:contentDescription="@string/create_button_description" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

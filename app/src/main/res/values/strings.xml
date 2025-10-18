@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Krickapp</string>
+
+    <!-- Your other strings -->
+    <string name="select_next_player">Select Next Player</string>
+    <string name="playing_squad">PLAYING SQUAD</string>
+    <string name="add_player">ADD PLAYER</string>
+    <string name="player_icon">Player icon</string>
+    <string name="create_button_description">Create new match or player</string>
+    <string name="who_won_toss">Who won the toss?</string>
+    <string name="team_a">TEAM A</string>
+    <string name="team_b">TEAM B</string>
+    <string name="bat">BAT</string>
+    <string name="bowl">BOWL</string>
+    <string name="save">Save</string>
+    <string name="opted_for">Winner of the toss selected to?</string>
+    <string name="vs">vs</string>
+    <string name="team_a_button">Select Team A as toss winner</string>
+    <string name="team_b_button">Select Team B as toss winner</string>
+    <string name="back_button">Back</string>
+    <string name="match_info">Match Info</string>
+    <string name="match_title">Warriors vs. Knights</string>
+    <string name="match_subtitle">Local League 2025</string>
+    <string name="add">Add</string>
+    <string name="warriors_vs_knights">Warriors vs. Knights</string>
+    <string name="local_league_2025">Local League 2025</string>
+
 </resources>
