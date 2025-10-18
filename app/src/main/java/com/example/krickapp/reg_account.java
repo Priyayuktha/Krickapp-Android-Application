@@ -1,5 +1,6 @@
 package com.example.krickapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,7 @@ public class reg_account extends AppCompatActivity {
     private EditText etFullName, etEmail, etPassword, etConfirmPassword;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,11 @@ public class reg_account extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Initialize ProgressDialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Creating account...");
+        progressDialog.setCancelable(false);
 
         etFullName = findViewById(R.id.et_full_name);
         etEmail = findViewById(R.id.et_email);
@@ -87,6 +94,9 @@ public class reg_account extends AppCompatActivity {
             return;
         }
 
+        // Show progress
+        progressDialog.show();
+
         // Create user with Firebase Authentication
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -96,6 +106,7 @@ public class reg_account extends AppCompatActivity {
                             String userId = mAuth.getCurrentUser().getUid();
                             saveUserData(userId, fullName, email);
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(reg_account.this,
                                     "Authentication failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
@@ -111,9 +122,13 @@ public class reg_account extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        progressDialog.dismiss();
                         if(task.isSuccessful()){
                             Toast.makeText(reg_account.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(reg_account.this, MainActivity.class));
+                            // Navigate to Dashboard instead of MainActivity
+                            Intent intent = new Intent(reg_account.this, DashboardActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
                             finish();
                         } else {
                             Toast.makeText(reg_account.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();

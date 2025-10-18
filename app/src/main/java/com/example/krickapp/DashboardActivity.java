@@ -31,10 +31,16 @@ public class DashboardActivity extends AppCompatActivity {
         profileIcon = findViewById(R.id.profile_icon);
         bottomNav = findViewById(R.id.bottomNav);
 
-        // Profile icon click
+        // Null safety checks
+        if (profileIcon == null || bottomNav == null) {
+            Toast.makeText(this, "Error loading dashboard", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Profile icon click - Show logout option
         profileIcon.setOnClickListener(v -> {
-            Toast.makeText(DashboardActivity.this, "Profile clicked", Toast.LENGTH_SHORT).show();
-            // Navigate to profile activity when created
+            showLogoutDialog();
         });
 
         // Bottom Navigation
@@ -64,5 +70,27 @@ public class DashboardActivity extends AppCompatActivity {
     public void onBackPressed() {
         // Prevent going back to login screen
         moveTaskToBack(true);
+    }
+    
+    private void showLogoutDialog() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Logout")
+            .setMessage("Are you sure you want to logout?")
+            .setPositiveButton("Logout", (dialog, which) -> {
+                // Sign out from Firebase
+                mAuth.signOut();
+                
+                Toast.makeText(DashboardActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+                
+                // Navigate back to MainActivity
+                Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            })
+            .setNegativeButton("Cancel", (dialog, which) -> {
+                dialog.dismiss();
+            })
+            .show();
     }
 }

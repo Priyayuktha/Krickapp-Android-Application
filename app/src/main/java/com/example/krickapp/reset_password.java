@@ -181,16 +181,32 @@ public class reset_password extends AppCompatActivity {
     }
     
     private boolean validateAllData() {
-        // Check if both teams have at least team name and 11 players
-        boolean team1Valid = !team1Name.isEmpty() && 
-            team1Players[0] != null && !team1Players[0].isEmpty() &&
-            team1Players[10] != null && !team1Players[10].isEmpty();
+        // Check if both teams have team name and all 11 players
+        if (team1Name.isEmpty()) {
+            Toast.makeText(this, "Please enter Team 1 name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        for (int i = 0; i < 11; i++) {
+            if (team1Players[i] == null || team1Players[i].isEmpty()) {
+                Toast.makeText(this, "Please enter all 11 players for Team 1", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        
+        if (team2Name.isEmpty()) {
+            Toast.makeText(this, "Please enter Team 2 name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        for (int i = 0; i < 11; i++) {
+            if (team2Players[i] == null || team2Players[i].isEmpty()) {
+                Toast.makeText(this, "Please enter all 11 players for Team 2", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
             
-        boolean team2Valid = !team2Name.isEmpty() && 
-            team2Players[0] != null && !team2Players[0].isEmpty() &&
-            team2Players[10] != null && !team2Players[10].isEmpty();
-            
-        return team1Valid && team2Valid;
+        return true;
     }
     
     private void saveMatchToFirebase() {

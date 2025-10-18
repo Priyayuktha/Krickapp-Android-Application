@@ -40,7 +40,7 @@
 
         <!-- ADD THIS LINE -->
         <color name="primary_yellow">#FFEB3B</color>
-
+        <color name="nav_item_color">#1C1C1E</color>
 
         <!-- You can have other colors defined as well -->
         <!-- <color name="black">#FF000000</color> -->

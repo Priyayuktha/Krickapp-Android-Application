@@ -41,9 +41,11 @@ public class create_match extends AppCompatActivity {
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-            @SuppressLint("SetTextI18n") DatePickerDialog dialog = new DatePickerDialog(create_match.this,
+            DatePickerDialog dialog = new DatePickerDialog(create_match.this,
                     (DatePicker view, int year1, int month1, int dayOfMonth) -> {
-                        etDate.setText(dayOfMonth + "/" + (month1 + 1) + "/" + year1);
+                        // Format date with leading zeros: DD/MM/YYYY
+                        String formattedDate = String.format("%02d/%02d/%d", dayOfMonth, (month1 + 1), year1);
+                        etDate.setText(formattedDate);
                     }, year, month, day);
             dialog.show();
         });
@@ -54,9 +56,11 @@ public class create_match extends AppCompatActivity {
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
 
-            @SuppressLint("SetTextI18n") TimePickerDialog dialog = new TimePickerDialog(create_match.this,
+            TimePickerDialog dialog = new TimePickerDialog(create_match.this,
                     (TimePicker view, int hourOfDay, int minute1) -> {
-                        etTime.setText(hourOfDay + ":" + minute1);
+                        // Format time with leading zeros
+                        String formattedTime = String.format("%02d:%02d", hourOfDay, minute1);
+                        etTime.setText(formattedTime);
                     }, hour, minute, true);
             dialog.show();
         });
@@ -75,8 +79,8 @@ public class create_match extends AppCompatActivity {
             if (matchName.isEmpty() || venue.isEmpty() || date.isEmpty() || time.isEmpty() || matchType.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
-                // Pass data to team selection activity
-                Intent intent = new Intent(create_match.this, TeamSelectionActivity.class);
+                // Pass data directly to team details activity
+                Intent intent = new Intent(create_match.this, reset_password.class);
                 intent.putExtra("matchName", matchName);
                 intent.putExtra("venue", venue);
                 intent.putExtra("date", date);
