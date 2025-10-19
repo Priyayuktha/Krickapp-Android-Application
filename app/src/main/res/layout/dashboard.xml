@@ -106,7 +106,7 @@
                         android:background="@drawable/yellow_circle1"
                         android:textAllCaps="false"
                         android:minWidth="90dp"
-                        style="@style/Widget.MaterialComponents.Button"
+                        app:backgroundTint="#FFD600"
                         app:cornerRadius="10dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
