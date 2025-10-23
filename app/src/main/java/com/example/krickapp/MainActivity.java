@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // This is a placeholder for your navigation logic.
-                Toast.makeText(MainActivity.this, "Create Account Clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Create Account Clicked", Toast.LENGTH_SHORT).show();
                 // You can replace the line above with an Intent to start a new Activity:
                 Intent intent = new Intent(MainActivity.this, reg_account.class);
                 startActivity(intent);
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
                  Intent intent = new Intent(MainActivity.this, login.class);
                 startActivity(intent);
             }
