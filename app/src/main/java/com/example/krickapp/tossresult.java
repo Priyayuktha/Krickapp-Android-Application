@@ -75,19 +75,19 @@ public class tossresult extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
 
-            if (id == R.id.navHome) {
+            if (id == R.id.navigation_home) {
                 startActivity(new Intent(tossresult.this, DashboardActivity.class));
                 return true;
-            } else if (id == R.id.navschedule) {
+            } else if (id == R.id.navigation_matches) {
                 startActivity(new Intent(tossresult.this, MatchesListActivity.class));
                 return true;
-            } else if (id == R.id.navCreate) {
+            } else if (id == R.id.navigation_create) {
                 startActivity(new Intent(tossresult.this, create_match.class));
                 return true;
-            } else if (id == R.id.navLive) {
+            } else if (id == R.id.navigation_live) {
                 Toast.makeText(this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
                 return true;
-            } else if (id == R.id.navMore) {
+            } else if (id == R.id.navigation_more) {
                 Toast.makeText(this, "More", Toast.LENGTH_SHORT).show();
                 return true;
             }

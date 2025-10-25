@@ -22,7 +22,7 @@ public class UserProfileActivity extends AppCompatActivity {
         TextInputLayout tilPassword = findViewById(R.id.til_password);
         Button btnLogout = findViewById(R.id.button_logout);
         Button btnDeleteAccount = findViewById(R.id.button_delete_account);
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
 
         // Using the initialized variables to prevent "unused" warnings
         tilName.setHint(R.string.name);

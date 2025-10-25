@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/background_white"
     android:padding="24dp">
 
     <!-- Title -->
@@ -15,7 +15,7 @@
         android:text="Create Match"
         android:textStyle="bold"
         android:textSize="22sp"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="Match Name"
         android:textSize="14sp"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="32dp"/>
@@ -38,10 +38,10 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:hint="e.g., Friendly T20"
-        android:backgroundTint="#E0E0E0"
+        android:backgroundTint="@color/border_gray"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/tvMatchName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="Venue"
         android:textSize="14sp"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/etMatchName"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"/>
@@ -63,10 +63,10 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:hint="Enter venue name"
-        android:backgroundTint="#E0E0E0"
+        android:backgroundTint="@color/border_gray"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/tvVenue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:text="Date"
         android:textSize="14sp"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/etVenue"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"/>
@@ -88,14 +88,14 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:hint="Select Date"
-        android:backgroundTint="#E0E0E0"
+        android:backgroundTint="@color/border_gray"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:focusable="false"
         android:clickable="true"
         android:cursorVisible="false"
         android:inputType="none"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/tvDateTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/etTime"
@@ -107,7 +107,7 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:hint="Select Time"
-        android:backgroundTint="#E0E0E0"
+        android:backgroundTint="@color/border_gray"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:focusable="false"
@@ -126,7 +126,7 @@
         android:layout_height="wrap_content"
         android:text="Match Type"
         android:textSize="14sp"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/etDate"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"/>
@@ -136,10 +136,10 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:hint="Select match type (e.g., T20, ODI)"
-        android:backgroundTint="#E0E0E0"
+        android:backgroundTint="@color/border_gray"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/tvMatchType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -150,7 +150,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:text="Cancel"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toBottomOf="@id/etMatchType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnNext"
@@ -162,13 +162,11 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:text="Next"
-        android:backgroundTint="#FFD700"
-        android:textColor="#000000"
+        android:backgroundTint="@color/primary_yellow"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@id/btnCancel"
         app:layout_constraintStart_toEndOf="@id/btnCancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.45"/>
-
-    <include layout="@layout/bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

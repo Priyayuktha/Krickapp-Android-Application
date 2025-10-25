@@ -191,23 +191,19 @@
     <!-- Bottom Navigation (fixed at bottom) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
+        style="@style/Widget.App.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:menu="@menu/bottom_nav_menu"
-        android:background="@android:color/white"
-        app:labelVisibilityMode="labeled" />
+        app:menu="@menu/bottom_nav_menu" />
 
     <!-- Floating Action Button centered above bottom nav -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_create"
-        android:layout_width="72dp"
-        android:layout_height="wrap_content"
-        app:backgroundTint="#FFD600"
-        android:src="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"
-        app:maxImageSize="40dp"
+        style="@style/Widget.App.FAB.Create"
+        android:src="@drawable/ic_add"
         app:layout_anchor="@id/bottom_nav"
-        app:layout_anchorGravity="center" />
+        app:layout_anchorGravity="center"
+        android:contentDescription="@string/create" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

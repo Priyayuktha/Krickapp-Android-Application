@@ -106,7 +106,7 @@
                         android:text="REPLACE"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/keyBlue" />
+                        android:textColor="@color/key_blue" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -227,22 +227,18 @@
     <!-- Bottom Nav -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
+        style="@style/Widget.App.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@android:color/white"
-        app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled"/>
+        app:menu="@menu/bottom_nav_menu" />
 
     <!-- FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_create"
-        android:layout_width="72dp"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"
-        app:backgroundTint="#FFD600"
+        style="@style/Widget.App.FAB.Create"
+        android:src="@drawable/ic_add"
         app:layout_anchor="@id/bottom_nav"
         app:layout_anchorGravity="center"
-        app:maxImageSize="40dp"/>
+        android:contentDescription="@string/create" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

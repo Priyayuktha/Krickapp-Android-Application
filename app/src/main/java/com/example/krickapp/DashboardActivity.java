@@ -31,7 +31,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Initialize views
         profileIcon = findViewById(R.id.profile_icon);
-        bottomNav = findViewById(R.id.bottomNav);
+        bottomNav = findViewById(R.id.bottom_nav);
 
         // Null safety checks
         if (profileIcon == null || bottomNav == null) {
@@ -49,21 +49,21 @@ public class DashboardActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             
-            if (itemId == R.id.navHome) {
+            if (itemId == R.id.navigation_home) {
                 // Already on home
                 return true;
-            } else if (itemId == R.id.navschedule) {
+            } else if (itemId == R.id.navigation_matches) {
                 startActivity(new Intent(DashboardActivity.this, MatchesListActivity.class));
                 return true;
-            } else if (itemId == R.id.navCreate) {
+            } else if (itemId == R.id.navigation_create) {
                 // Navigate to create match
                 startActivity(new Intent(DashboardActivity.this, create_match.class));
                 return true;
-            } else if (itemId == R.id.navLive) {
+            } else if (itemId == R.id.navigation_live) {
                 Toast.makeText(DashboardActivity.this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
                 // Navigate to live scoring activity when created
                 return true;
-            } else if (itemId == R.id.navMore) {
+            } else if (itemId == R.id.navigation_more) {
                 Toast.makeText(DashboardActivity.this, "More", Toast.LENGTH_SHORT).show();
                 // Navigate to more/settings activity when created
                 return true;
