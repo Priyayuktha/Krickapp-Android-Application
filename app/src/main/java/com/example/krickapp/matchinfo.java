@@ -15,7 +15,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class matchinfo extends AppCompatActivity {
 
     private BottomNavigationView bottomNav;
-    private FloatingActionButton fabCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +27,7 @@ public class matchinfo extends AppCompatActivity {
 
         // Setup bottom navigation
         bottomNav = findViewById(R.id.bottom_nav);
-        fabCreate = findViewById(R.id.fab_create);
-        
+
         bottomNav.setSelectedItemId(R.id.navigation_matches);
         
         bottomNav.setOnItemSelectedListener(item -> {
@@ -55,10 +53,6 @@ public class matchinfo extends AppCompatActivity {
                 return true;
             }
             return false;
-        });
-        
-        fabCreate.setOnClickListener(v -> {
-            startActivity(new Intent(this, create_match.class));
         });
 
         // Setup rows with icons + text

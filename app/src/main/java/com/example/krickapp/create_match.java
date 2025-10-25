@@ -23,7 +23,6 @@ public class create_match extends AppCompatActivity {
     EditText etMatchName, etVenue, etDate, etTime, etMatchType;
     Button btnCancel, btnNext;
     BottomNavigationView bottomNav;
-    FloatingActionButton fabCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,6 @@ public class create_match extends AppCompatActivity {
 
         // Setup bottom navigation
         bottomNav = findViewById(R.id.bottom_nav);
-        fabCreate = findViewById(R.id.fab_create);
 
         // Set Create as selected
         bottomNav.setSelectedItemId(R.id.navigation_create);
@@ -69,12 +67,6 @@ public class create_match extends AppCompatActivity {
                 return true;
             }
             return false;
-        });
-
-        // FAB should also stay on this screen since we're creating
-        fabCreate.setOnClickListener(v -> {
-            // Already on create screen, do nothing or scroll to top
-            Toast.makeText(this, "Fill the form to create a match", Toast.LENGTH_SHORT).show();
         });
 
         // Date Picker

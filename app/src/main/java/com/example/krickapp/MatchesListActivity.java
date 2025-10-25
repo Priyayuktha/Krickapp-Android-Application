@@ -39,7 +39,6 @@ public class MatchesListActivity extends AppCompatActivity {
     private String currentTab = "live";
     
     private BottomNavigationView bottomNav;
-    private FloatingActionButton fabCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +55,7 @@ public class MatchesListActivity extends AppCompatActivity {
         tabCompleted = findViewById(R.id.tab_completed);
         
         bottomNav = findViewById(R.id.bottom_nav);
-        fabCreate = findViewById(R.id.fab_create);
-        
+
         // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         matchesList = new ArrayList<>();
@@ -102,10 +100,6 @@ public class MatchesListActivity extends AppCompatActivity {
                 return true;
             }
             return false;
-        });
-        
-        fabCreate.setOnClickListener(v -> {
-            startActivity(new Intent(this, create_match.class));
         });
         
         // Load matches

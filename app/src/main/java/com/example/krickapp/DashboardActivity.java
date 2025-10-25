@@ -194,16 +194,361 @@ public class DashboardActivity extends AppCompatActivity {
     // CARD CREATION METHODS
     // ------------------------------------------------------------------
 
-    // Placeholder method for Highlights - Implement this to match your card structure
+    // Method for Highlights - Featured/Important Matches
     private void addHighlightCardToContainer(Match match) {
-        // You can copy the code from addScheduledMatchCardToContainer and adapt it
-        // to match the appearance and function of your Highlight Card.
+        // 1. Create a new CardView instance
+        CardView cardView = new CardView(this);
+        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        cardParams.setMargins(0, 0, 0, (int) (12 * getResources().getDisplayMetrics().density));
+        cardView.setLayoutParams(cardParams);
+
+        cardView.setRadius(12 * getResources().getDisplayMetrics().density);
+        cardView.setCardElevation(4 * getResources().getDisplayMetrics().density);
+        cardView.setCardBackgroundColor(0xFFFFFFFF);
+
+        // 2. Create the internal ConstraintLayout
+        ConstraintLayout constraintLayout = new ConstraintLayout(this);
+        constraintLayout.setLayoutParams(new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ));
+        constraintLayout.setPadding(
+                (int) (20 * getResources().getDisplayMetrics().density),
+                (int) (20 * getResources().getDisplayMetrics().density),
+                (int) (20 * getResources().getDisplayMetrics().density),
+                (int) (20 * getResources().getDisplayMetrics().density)
+        );
+
+        // 3. Create the "LIVE" Badge
+        TextView badgeView = new TextView(this);
+        badgeView.setId(View.generateViewId());
+        badgeView.setText("HIGHLIGHT");
+        badgeView.setTextSize(10);
+        badgeView.setTextColor(0xFFFFFFFF);
+        badgeView.setBackgroundColor(0xFFD32F2F); // Red background
+        badgeView.setTypeface(null, Typeface.BOLD);
+        badgeView.setPadding(
+                (int) (12 * getResources().getDisplayMetrics().density),
+                (int) (4 * getResources().getDisplayMetrics().density),
+                (int) (12 * getResources().getDisplayMetrics().density),
+                (int) (4 * getResources().getDisplayMetrics().density)
+        );
+
+        ConstraintLayout.LayoutParams badgeParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        badgeParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        badgeParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        badgeView.setLayoutParams(badgeParams);
+
+        // 4. Create Venue TextView
+        TextView venueView = new TextView(this);
+        venueView.setId(View.generateViewId());
+        venueView.setText(match.getVenue() != null ? match.getVenue() : "Venue TBD");
+        venueView.setTextSize(12);
+        venueView.setTextColor(0xFF888888);
+
+        ConstraintLayout.LayoutParams venueParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        venueParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        venueParams.topToBottom = badgeView.getId();
+        venueParams.topMargin = (int) (12 * getResources().getDisplayMetrics().density);
+        venueView.setLayoutParams(venueParams);
+
+        // 5. Create Team 1 Name
+        TextView team1View = new TextView(this);
+        team1View.setId(View.generateViewId());
+        String team1Name = match.getTeam1() != null && match.getTeam1().getTeamName() != null 
+                ? match.getTeam1().getTeamName() : "Team 1";
+        team1View.setText(team1Name);
+        team1View.setTextSize(18);
+        team1View.setTextColor(0xFF000000);
+        team1View.setTypeface(null, Typeface.BOLD);
+
+        ConstraintLayout.LayoutParams team1Params = new ConstraintLayout.LayoutParams(
+                0,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        team1Params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        team1Params.topToBottom = venueView.getId();
+        team1Params.topMargin = (int) (12 * getResources().getDisplayMetrics().density);
+        team1Params.endToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        team1Params.horizontalBias = 0;
+        team1View.setLayoutParams(team1Params);
+
+        // 6. Create Team 1 Score (mock data)
+        TextView score1View = new TextView(this);
+        score1View.setId(View.generateViewId());
+        score1View.setText("298-7");
+        score1View.setTextSize(16);
+        score1View.setTextColor(0xFF000000);
+        score1View.setTypeface(null, Typeface.BOLD);
+
+        ConstraintLayout.LayoutParams score1Params = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        score1Params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        score1Params.topToTop = team1View.getId();
+        score1Params.bottomToBottom = team1View.getId();
+        score1View.setLayoutParams(score1Params);
+
+        // 7. Create Team 2 Name
+        TextView team2View = new TextView(this);
+        team2View.setId(View.generateViewId());
+        String team2Name = match.getTeam2() != null && match.getTeam2().getTeamName() != null 
+                ? match.getTeam2().getTeamName() : "Team 2";
+        team2View.setText(team2Name);
+        team2View.setTextSize(18);
+        team2View.setTextColor(0xFF000000);
+        team2View.setTypeface(null, Typeface.BOLD);
+
+        ConstraintLayout.LayoutParams team2Params = new ConstraintLayout.LayoutParams(
+                0,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        team2Params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        team2Params.topToBottom = team1View.getId();
+        team2Params.topMargin = (int) (8 * getResources().getDisplayMetrics().density);
+        team2Params.endToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        team2Params.horizontalBias = 0;
+        team2View.setLayoutParams(team2Params);
+
+        // 8. Create Team 2 Score (mock data)
+        TextView score2View = new TextView(this);
+        score2View.setText("156-3");
+        score2View.setTextSize(16);
+        score2View.setTextColor(0xFF000000);
+        score2View.setTypeface(null, Typeface.BOLD);
+
+        ConstraintLayout.LayoutParams score2Params = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        score2Params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        score2Params.topToTop = team2View.getId();
+        score2Params.bottomToBottom = team2View.getId();
+        score2View.setLayoutParams(score2Params);
+
+        // 9. Add all views to ConstraintLayout
+        constraintLayout.addView(badgeView);
+        constraintLayout.addView(venueView);
+        constraintLayout.addView(team1View);
+        constraintLayout.addView(score1View);
+        constraintLayout.addView(team2View);
+        constraintLayout.addView(score2View);
+
+        // 10. Add ConstraintLayout to CardView
+        cardView.addView(constraintLayout);
+
+        // 11. Set click listener to open match details
+        cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, matchinfo.class);
+            intent.putExtra("matchId", match.getMatchId());
+            startActivity(intent);
+        });
+
+        // 12. Add CardView to the container
+        highlightsContainer.addView(cardView);
     }
 
-    // Placeholder method for Recent Matches - Implement this to match your card structure
+    // Method for Recent Matches - Completed Matches
     private void addRecentMatchCardToContainer(Match match) {
-        // You can copy the code from addScheduledMatchCardToContainer and adapt it
-        // to match the appearance and function of your Recent Match Card.
+        // 1. Create a new CardView instance
+        CardView cardView = new CardView(this);
+        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        cardParams.setMargins(0, 0, 0, (int) (10 * getResources().getDisplayMetrics().density));
+        cardView.setLayoutParams(cardParams);
+
+        cardView.setRadius(8 * getResources().getDisplayMetrics().density);
+        cardView.setCardElevation(2 * getResources().getDisplayMetrics().density);
+        cardView.setCardBackgroundColor(0xFFFFFFFF);
+
+        // 2. Create the internal ConstraintLayout
+        ConstraintLayout constraintLayout = new ConstraintLayout(this);
+        constraintLayout.setLayoutParams(new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ));
+        constraintLayout.setPadding(
+                (int) (16 * getResources().getDisplayMetrics().density),
+                (int) (16 * getResources().getDisplayMetrics().density),
+                (int) (16 * getResources().getDisplayMetrics().density),
+                (int) (16 * getResources().getDisplayMetrics().density)
+        );
+
+        // 3. Create the "COMPLETED" Badge
+        TextView badgeView = new TextView(this);
+        badgeView.setId(View.generateViewId());
+        badgeView.setText("COMPLETED");
+        badgeView.setTextSize(10);
+        badgeView.setTextColor(0xFFFFFFFF);
+        badgeView.setBackgroundColor(0xFF4CAF50); // Green background
+        badgeView.setTypeface(null, Typeface.BOLD);
+        badgeView.setPadding(
+                (int) (12 * getResources().getDisplayMetrics().density),
+                (int) (4 * getResources().getDisplayMetrics().density),
+                (int) (12 * getResources().getDisplayMetrics().density),
+                (int) (4 * getResources().getDisplayMetrics().density)
+        );
+
+        ConstraintLayout.LayoutParams badgeParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        badgeParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        badgeParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        badgeView.setLayoutParams(badgeParams);
+
+        // 4. Create Date TextView
+        TextView dateView = new TextView(this);
+        dateView.setId(View.generateViewId());
+        dateView.setText(match.getDate() != null ? match.getDate() : "Date TBD");
+        dateView.setTextSize(12);
+        dateView.setTextColor(0xFF888888);
+
+        ConstraintLayout.LayoutParams dateParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        dateParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        dateParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        dateView.setLayoutParams(dateParams);
+
+        // 5. Create Venue TextView
+        TextView venueView = new TextView(this);
+        venueView.setId(View.generateViewId());
+        venueView.setText(match.getVenue() != null ? match.getVenue() : "Venue TBD");
+        venueView.setTextSize(12);
+        venueView.setTextColor(0xFF888888);
+
+        ConstraintLayout.LayoutParams venueParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        venueParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        venueParams.topToBottom = badgeView.getId();
+        venueParams.topMargin = (int) (12 * getResources().getDisplayMetrics().density);
+        venueView.setLayoutParams(venueParams);
+
+        // 6. Create Team 1 Name and Score
+        TextView team1View = new TextView(this);
+        team1View.setId(View.generateViewId());
+        String team1Name = match.getTeam1() != null && match.getTeam1().getTeamName() != null 
+                ? match.getTeam1().getTeamName() : "Team 1";
+        team1View.setText(team1Name);
+        team1View.setTextSize(16);
+        team1View.setTextColor(0xFF000000);
+        team1View.setTypeface(null, Typeface.BOLD);
+
+        ConstraintLayout.LayoutParams team1Params = new ConstraintLayout.LayoutParams(
+                0,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        team1Params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        team1Params.topToBottom = venueView.getId();
+        team1Params.topMargin = (int) (12 * getResources().getDisplayMetrics().density);
+        team1Params.endToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        team1Params.horizontalBias = 0;
+        team1View.setLayoutParams(team1Params);
+
+        TextView score1View = new TextView(this);
+        score1View.setId(View.generateViewId());
+        score1View.setText("287-8");
+        score1View.setTextSize(14);
+        score1View.setTextColor(0xFF000000);
+
+        ConstraintLayout.LayoutParams score1Params = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        score1Params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        score1Params.topToTop = team1View.getId();
+        score1Params.bottomToBottom = team1View.getId();
+        score1View.setLayoutParams(score1Params);
+
+        // 7. Create Team 2 Name and Score
+        TextView team2View = new TextView(this);
+        team2View.setId(View.generateViewId());
+        String team2Name = match.getTeam2() != null && match.getTeam2().getTeamName() != null 
+                ? match.getTeam2().getTeamName() : "Team 2";
+        team2View.setText(team2Name);
+        team2View.setTextSize(16);
+        team2View.setTextColor(0xFF000000);
+        team2View.setTypeface(null, Typeface.BOLD);
+
+        ConstraintLayout.LayoutParams team2Params = new ConstraintLayout.LayoutParams(
+                0,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        team2Params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        team2Params.topToBottom = team1View.getId();
+        team2Params.topMargin = (int) (8 * getResources().getDisplayMetrics().density);
+        team2Params.endToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        team2Params.horizontalBias = 0;
+        team2View.setLayoutParams(team2Params);
+
+        TextView score2View = new TextView(this);
+        score2View.setText("245-10");
+        score2View.setTextSize(14);
+        score2View.setTextColor(0xFF000000);
+
+        ConstraintLayout.LayoutParams score2Params = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        score2Params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        score2Params.topToTop = team2View.getId();
+        score2Params.bottomToBottom = team2View.getId();
+        score2View.setLayoutParams(score2Params);
+
+        // 8. Create Result TextView
+        TextView resultView = new TextView(this);
+        resultView.setText(team1Name + " won by 42 runs");
+        resultView.setTextSize(12);
+        resultView.setTextColor(0xFF1976D2); // Blue color
+        resultView.setTypeface(null, Typeface.BOLD);
+
+        ConstraintLayout.LayoutParams resultParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        resultParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        resultParams.topToBottom = team2View.getId();
+        resultParams.topMargin = (int) (12 * getResources().getDisplayMetrics().density);
+        resultView.setLayoutParams(resultParams);
+
+        // 9. Add all views to ConstraintLayout
+        constraintLayout.addView(badgeView);
+        constraintLayout.addView(dateView);
+        constraintLayout.addView(venueView);
+        constraintLayout.addView(team1View);
+        constraintLayout.addView(score1View);
+        constraintLayout.addView(team2View);
+        constraintLayout.addView(score2View);
+        constraintLayout.addView(resultView);
+
+        // 10. Add ConstraintLayout to CardView
+        cardView.addView(constraintLayout);
+
+        // 11. Set click listener to open match details
+        cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, matchinfo.class);
+            intent.putExtra("matchId", match.getMatchId());
+            startActivity(intent);
+        });
+
+        // 12. Add CardView to the container
+        recentMatchesContainer.addView(cardView);
     }
 
     // Renamed and updated existing method for Scheduled Matches
@@ -282,7 +627,14 @@ public class DashboardActivity extends AppCompatActivity {
         // 7. Add ConstraintLayout to CardView
         cardView.addView(constraintLayout);
 
-        // 8. Add CardView to the main container
+        // 8. Set click listener to open match details
+        cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, matchinfo.class);
+            intent.putExtra("matchId", match.getMatchId());
+            startActivity(intent);
+        });
+
+        // 9. Add CardView to the main container
         scheduledMatchesContainer.addView(cardView);
     }
 
