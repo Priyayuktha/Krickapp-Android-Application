@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    android:backgroundTint="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Status Badge -->
+        <TextView
+            android:id="@+id/tv_status_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Live"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:background="@drawable/status_live_background"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <!-- Date and Status Text (Right Side) -->
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aug 26"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Live"
+            android:textColor="@color/status_live"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_date"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Venue -->
+        <TextView
+            android:id="@+id/tv_venue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="IIT Delhi Ground"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_status_badge"/>
+
+        <!-- Team 1 -->
+        <TextView
+            android:id="@+id/tv_team1_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="IIT Delhi"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_team1_score"
+            app:layout_constraintTop_toBottomOf="@id/tv_venue"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_team1_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="298-7"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_team1_overs"
+            app:layout_constraintTop_toTopOf="@id/tv_team1_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_team1_name"
+            android:layout_marginEnd="4dp"/>
+
+        <TextView
+            android:id="@+id/tv_team1_overs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(47.3)"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_team1_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_team1_name"/>
+
+        <!-- Team 2 -->
+        <TextView
+            android:id="@+id/tv_team2_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="VIT Vellore"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_team2_score"
+            app:layout_constraintTop_toBottomOf="@id/tv_team1_name"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_team2_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="156-3"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_team2_overs"
+            app:layout_constraintTop_toTopOf="@id/tv_team2_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_team2_name"
+            android:layout_marginEnd="4dp"/>
+
+        <TextView
+            android:id="@+id/tv_team2_overs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(28.1)"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_team2_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_team2_name"/>
+
+        <!-- VS Text (for scheduled matches) -->
+        <TextView
+            android:id="@+id/tv_vs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VS"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_team1_name"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Match Info (for scheduled matches) -->
+        <TextView
+            android:id="@+id/tv_match_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Starts in 1h 55m"
+            android:textColor="@color/accent_blue"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vs"
+            android:layout_marginTop="8dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

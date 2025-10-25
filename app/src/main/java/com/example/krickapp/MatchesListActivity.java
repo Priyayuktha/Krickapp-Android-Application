@@ -1,19 +1,20 @@
 package com.example.krickapp;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,13 +29,18 @@ public class MatchesListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MatchesAdapter adapter;
     private List<Match> matchesList;
+    private List<Match> allMatches;
     private DatabaseReference mDatabase;
-    private SwipeRefreshLayout swipeRefresh;
     private LinearLayout emptyState;
+    private ValueEventListener matchesListener;
     
-    private Button btnAll, btnScheduled, btnOngoing, btnCompleted;
-    private String currentFilter = "all";
+    private TextView tabUpcoming, tabLive, tabCompleted;
+    private Button btnFlipCoin;
+    private String currentTab = "live";
     
+    private BottomNavigationView bottomNav;
+    private FloatingActionButton fabCreate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,84 +48,133 @@ public class MatchesListActivity extends AppCompatActivity {
         
         // Initialize views
         recyclerView = findViewById(R.id.recycler_matches);
-        swipeRefresh = findViewById(R.id.swipe_refresh);
         emptyState = findViewById(R.id.empty_state);
-        ImageView btnBack = findViewById(R.id.btn_back);
+        btnFlipCoin = findViewById(R.id.btn_flip_coin);
         
-        btnAll = findViewById(R.id.btn_all);
-        btnScheduled = findViewById(R.id.btn_scheduled);
-        btnOngoing = findViewById(R.id.btn_ongoing);
-        btnCompleted = findViewById(R.id.btn_completed);
+        tabUpcoming = findViewById(R.id.tab_upcoming);
+        tabLive = findViewById(R.id.tab_live);
+        tabCompleted = findViewById(R.id.tab_completed);
+        
+        bottomNav = findViewById(R.id.bottom_nav);
+        fabCreate = findViewById(R.id.fab_create);
         
         // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         matchesList = new ArrayList<>();
-        adapter = new MatchesAdapter(matchesList);
+        allMatches = new ArrayList<>();
+        adapter = new MatchesAdapter(matchesList, this);
         recyclerView.setAdapter(adapter);
-        
-        // Setup click listener for match items
-        adapter.setOnMatchClickListener(match -> {
-            Toast.makeText(MatchesListActivity.this, 
-                "Match: " + match.getMatchName(), Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to match details activity
-        });
         
         // Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference("matches");
         
-        // Back button
-        btnBack.setOnClickListener(v -> finish());
+        // Tab click listeners
+        tabUpcoming.setOnClickListener(v -> selectTab("upcoming"));
+        tabLive.setOnClickListener(v -> selectTab("live"));
+        tabCompleted.setOnClickListener(v -> selectTab("completed"));
         
-        // Swipe to refresh
-        swipeRefresh.setOnRefreshListener(this::loadMatches);
+        // Flip coin button
+        btnFlipCoin.setOnClickListener(v -> {
+            startActivity(new Intent(this, tossresult.class));
+        });
         
-        // Filter buttons
-        btnAll.setOnClickListener(v -> applyFilter("all"));
-        btnScheduled.setOnClickListener(v -> applyFilter("scheduled"));
-        btnOngoing.setOnClickListener(v -> applyFilter("ongoing"));
-        btnCompleted.setOnClickListener(v -> applyFilter("completed"));
+        // Setup bottom navigation
+        bottomNav.setSelectedItemId(R.id.navigation_matches);
+        
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(this, DashboardActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_matches) {
+                return true;
+            } else if (itemId == R.id.navigation_create) {
+                startActivity(new Intent(this, create_match.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_live) {
+                Toast.makeText(this, "Live matches", Toast.LENGTH_SHORT).show();
+                return false;
+            } else if (itemId == R.id.navigation_more) {
+                Toast.makeText(this, "More options coming soon", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return false;
+        });
+        
+        fabCreate.setOnClickListener(v -> {
+            startActivity(new Intent(this, create_match.class));
+        });
         
         // Load matches
         loadMatches();
     }
     
-    private void loadMatches() {
-        swipeRefresh.setRefreshing(true);
+    private void selectTab(String tab) {
+        currentTab = tab;
         
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        // Reset all tabs
+        tabUpcoming.setBackgroundResource(R.drawable.tab_unselected_background);
+        tabUpcoming.setTextColor(getColor(R.color.text_secondary));
+        tabUpcoming.setTypeface(null, android.graphics.Typeface.NORMAL);
+        
+        tabLive.setBackgroundResource(R.drawable.tab_unselected_background);
+        tabLive.setTextColor(getColor(R.color.text_secondary));
+        tabLive.setTypeface(null, android.graphics.Typeface.NORMAL);
+        
+        tabCompleted.setBackgroundResource(R.drawable.tab_unselected_background);
+        tabCompleted.setTextColor(getColor(R.color.text_secondary));
+        tabCompleted.setTypeface(null, android.graphics.Typeface.NORMAL);
+        
+        // Set selected tab
+        switch (tab) {
+            case "upcoming":
+                tabUpcoming.setBackgroundResource(R.drawable.tab_selected_background);
+                tabUpcoming.setTextColor(getColor(R.color.text_primary));
+                tabUpcoming.setTypeface(null, android.graphics.Typeface.BOLD);
+                btnFlipCoin.setVisibility(View.GONE);
+                break;
+            case "live":
+                tabLive.setBackgroundResource(R.drawable.tab_selected_background);
+                tabLive.setTextColor(getColor(R.color.text_primary));
+                tabLive.setTypeface(null, android.graphics.Typeface.BOLD);
+                btnFlipCoin.setVisibility(View.VISIBLE);
+                break;
+            case "completed":
+                tabCompleted.setBackgroundResource(R.drawable.tab_selected_background);
+                tabCompleted.setTextColor(getColor(R.color.text_primary));
+                tabCompleted.setTypeface(null, android.graphics.Typeface.BOLD);
+                btnFlipCoin.setVisibility(View.GONE);
+                break;
+        }
+        
+        filterMatches();
+    }
+    
+    private void loadMatches() {
+        matchesListener = mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                matchesList.clear();
+                allMatches.clear();
                 
                 for (DataSnapshot matchSnapshot : snapshot.getChildren()) {
                     try {
                         Match match = matchSnapshot.getValue(Match.class);
                         if (match != null) {
                             match.setMatchId(matchSnapshot.getKey());
-                            matchesList.add(match);
+                            allMatches.add(match);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 
-                adapter.updateData(matchesList);
-                applyFilter(currentFilter);
-                swipeRefresh.setRefreshing(false);
-                
-                // Show/hide empty state
-                if (matchesList.isEmpty()) {
-                    emptyState.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                } else {
-                    emptyState.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                }
+                filterMatches();
             }
             
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                swipeRefresh.setRefreshing(false);
                 Toast.makeText(MatchesListActivity.this, 
                     "Failed to load matches: " + error.getMessage(), 
                     Toast.LENGTH_SHORT).show();
@@ -127,34 +182,38 @@ public class MatchesListActivity extends AppCompatActivity {
         });
     }
     
-    private void applyFilter(String filter) {
-        currentFilter = filter;
-        adapter.filterByStatus(filter);
+    private void filterMatches() {
+        matchesList.clear();
         
-        // Update button colors
-        resetFilterButtons();
+        for (Match match : allMatches) {
+            String status = match.getStatus() != null ? match.getStatus().toLowerCase() : "scheduled";
+            
+            if (currentTab.equals("upcoming") && status.equals("scheduled")) {
+                matchesList.add(match);
+            } else if (currentTab.equals("live") && (status.equals("ongoing") || status.equals("live"))) {
+                matchesList.add(match);
+            } else if (currentTab.equals("completed") && status.equals("completed")) {
+                matchesList.add(match);
+            }
+        }
         
-        switch (filter) {
-            case "all":
-                btnAll.setBackgroundColor(Color.parseColor("#FFD600"));
-                break;
-            case "scheduled":
-                btnScheduled.setBackgroundColor(Color.parseColor("#FFD600"));
-                break;
-            case "ongoing":
-                btnOngoing.setBackgroundColor(Color.parseColor("#FFD600"));
-                break;
-            case "completed":
-                btnCompleted.setBackgroundColor(Color.parseColor("#FFD600"));
-                break;
+        adapter.notifyDataSetChanged();
+        
+        // Show/hide empty state
+        if (matchesList.isEmpty()) {
+            emptyState.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
     }
     
-    private void resetFilterButtons() {
-        int grayColor = Color.parseColor("#E0E0E0");
-        btnAll.setBackgroundColor(grayColor);
-        btnScheduled.setBackgroundColor(grayColor);
-        btnOngoing.setBackgroundColor(grayColor);
-        btnCompleted.setBackgroundColor(grayColor);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (matchesListener != null && mDatabase != null) {
+            mDatabase.removeEventListener(matchesListener);
+        }
     }
 }

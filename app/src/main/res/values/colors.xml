@@ -40,4 +40,12 @@
     <color name="profile_placeholder_bg">#E0E0E0</color>
     <color name="nav_item_color">#757575</color>
     <color name="border_gray">#E0E0E0</color>
+
+    <!-- Match Status Colors -->
+    <color name="status_live">#E53935</color>
+    <color name="status_scheduled">#1976D2</color>
+    <color name="status_completed">#4CAF50</color>
+    <color name="status_live_bg">#FFEBEE</color>
+    <color name="status_scheduled_bg">#E3F2FD</color>
+    <color name="status_completed_bg">#E8F5E9</color>
 </resources>
