@@ -3,73 +3,97 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/background_light">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="80dp"
+        android:fillViewport="true">
 
-        <!-- Top Bar -->
-        <TextView
-            android:id="@+id/tvTopBar"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:drawableStartCompat="@drawable/backarrow"
-            android:drawablePadding="8dp"
-            android:text="@string/match_info"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center_vertical|center_horizontal"
-            android:padding="16dp"
-            app:drawableTint="@color/black"
-            android:contentDescription="@string/back_button" />
+            android:layout_height="wrap_content">
 
-        <!-- Card with match info -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
+            <!-- Top Bar -->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@color/white">
 
-                <!-- Header -->
+                <ImageView
+                    android:id="@+id/btn_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/backarrow"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/back_button" />
+
                 <TextView
-                    android:id="@+id/tvMatchTitle"
+                    android:id="@+id/tvTopBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/warriors_vs_knights"
-                    android:textSize="18sp"
+                    android:text="Match Info"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:textColor="@color/text_primary"
+                    android:layout_centerInParent="true"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+            </RelativeLayout>
+
+            <!-- Card with match info -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:backgroundTint="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/local_league_2025"
-                    android:textSize="14sp"
-                    android:textColor="#777"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="16dp"/>
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                <!-- Rows -->
-                <include layout="@layout/row_match_info" android:id="@+id/rowMatchType"/>
-                <include layout="@layout/row_match_info" android:id="@+id/rowDate"/>
-                <include layout="@layout/row_match_info" android:id="@+id/rowTime"/>
-                <include layout="@layout/row_match_info" android:id="@+id/rowVenue"/>
-                <include layout="@layout/row_match_info" android:id="@+id/rowCity"/>
-                <include layout="@layout/row_match_info" android:id="@+id/rowToss"/>
-                <include layout="@layout/row_match_info" android:id="@+id/rowHost"/>
+                    <!-- Header -->
+                    <TextView
+                        android:id="@+id/tvMatchTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Warriors vs. Knights"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="4dp"/>
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvMatchSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Local League 2025"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="32dp"/>
+
+                    <!-- Rows -->
+                    <include layout="@layout/row_match_info" android:id="@+id/rowMatchType"/>
+                    <include layout="@layout/row_match_info" android:id="@+id/rowDate"/>
+                    <include layout="@layout/row_match_info" android:id="@+id/rowTime"/>
+                    <include layout="@layout/row_match_info" android:id="@+id/rowVenue"/>
+                    <include layout="@layout/row_match_info" android:id="@+id/rowCity"/>
+                    <include layout="@layout/row_match_info" android:id="@+id/rowToss"/>
+                    <include layout="@layout/row_match_info" android:id="@+id/rowHost"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -80,13 +104,5 @@
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_menu" />
 
-    <!-- Floating Action Button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_create"
-        style="@style/Widget.App.FAB.Create"
-        android:src="@drawable/ic_add"
-        app:layout_anchor="@id/bottom_nav"
-        app:layout_anchorGravity="center"
-        android:contentDescription="@string/create" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
