@@ -7,14 +7,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText; // Corrected import
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserProfileActivity extends AppCompatActivity {
 
-    // 1. Declare Firebase Auth
     private FirebaseAuth mAuth;
     private TextInputEditText etName, etEmail, etPassword;
 
@@ -26,10 +24,10 @@ public class UserProfileActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Initialize UI components
+        // Initialize UI components (EditTexts and Buttons)
         FloatingActionButton fabAddPicture = findViewById(R.id.fab_add_picture);
 
-        // 2. Initialize the inner EditText fields (using the new IDs)
+        // Initialize the inner EditText fields (using the new IDs from the XML)
         etName = findViewById(R.id.et_name);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
@@ -42,61 +40,65 @@ public class UserProfileActivity extends AppCompatActivity {
         loadUserProfile();
 
         // Set click listeners
-        fabAddPicture.setOnClickListener(v -> Toast.makeText(UserProfileActivity.this, "Add new profile picture", Toast.LENGTH_SHORT).show());
+        fabAddPicture.setOnClickListener(v ->
+                Toast.makeText(UserProfileActivity.this, "Add new profile picture functionality TBD", Toast.LENGTH_SHORT).show()
+        );
 
-        // 3. Implement actual Logout logic
         btnLogout.setOnClickListener(v -> showLogoutDialog());
 
-        btnDeleteAccount.setOnClickListener(v -> {
-            // Placeholder for Delete Account logic (Needs confirmation dialog)
-            Toast.makeText(UserProfileActivity.this, "Delete Account functionality TBD", Toast.LENGTH_SHORT).show();
-        });
+        // Delete Account - Calls confirmation dialog
+        btnDeleteAccount.setOnClickListener(v -> showDeleteConfirmationDialog());
 
         // Set bottom navigation listener
         bottomNav.setOnItemSelectedListener(item -> {
-            // Note: You should navigate to real activities here, not just show Toasts
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
-                // Example navigation back to Dashboard
                 startActivity(new Intent(UserProfileActivity.this, DashboardActivity.class));
                 finish();
                 return true;
             } else if (itemId == R.id.navigation_matches) {
-                // Navigate to Matches List/Schedule
                 startActivity(new Intent(UserProfileActivity.this, MatchesListActivity.class));
                 return true;
+            } else if (itemId == R.id.navigation_create) {
+                startActivity(new Intent(UserProfileActivity.this, create_match.class));
+                return true;
             }
-            // ... handle other nav items
+            // Add logic for other nav items (Live and More)
             return false;
         });
     }
 
-    // Helper method to load data from Firebase Auth
+    // ------------------------------------------------------------------
+    // 1. Load User Profile Data
+    // ------------------------------------------------------------------
     private void loadUserProfile() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             // Set Name (use display name if available, otherwise use email prefix)
             String userName = user.getDisplayName();
             if (userName == null || userName.isEmpty()) {
-                userName = user.getEmail().split("@")[0]; // Simple email prefix as name
+                // Safely extract the part before the '@' in the email
+                userName = user.getEmail() != null ? user.getEmail().split("@")[0] : "User";
             }
             etName.setText(userName);
 
             // Set Email
             etEmail.setText(user.getEmail());
 
-            // Set Password (ONLY use placeholder text for security)
+            // Set Password (USE PLACEHOLDER TEXT ONLY)
             etPassword.setText("**********");
 
         } else {
-            Toast.makeText(this, "User not logged in.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "User not logged in. Redirecting to login.", Toast.LENGTH_LONG).show();
             // Redirect to login if user is null
             startActivity(new Intent(this, login.class));
             finish();
         }
     }
 
-    // Method to show confirmation dialog and handle logout
+    // ------------------------------------------------------------------
+    // 2. Logout Logic
+    // ------------------------------------------------------------------
     private void showLogoutDialog() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Logout")
@@ -106,8 +108,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
                     Toast.makeText(UserProfileActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
 
-                    // Navigate to the Login/Main screen
-                    Intent intent = new Intent(UserProfileActivity.this, login.class); // Use your main entry activity if different
+                    // Navigate to the Login screen
+                    Intent intent = new Intent(UserProfileActivity.this, login.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
@@ -116,5 +118,55 @@ public class UserProfileActivity extends AppCompatActivity {
                     dialog.dismiss();
                 })
                 .show();
+    }
+
+    // ------------------------------------------------------------------
+    // 3. Delete Account Logic
+    // ------------------------------------------------------------------
+    private void showDeleteConfirmationDialog() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Delete Account")
+                .setMessage("Are you absolutely sure you want to permanently delete your account? This action cannot be undone.")
+                .setPositiveButton("DELETE", (dialog, which) -> {
+                    deleteUserAccount();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+    private void deleteUserAccount() {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            user.delete()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(UserProfileActivity.this, "Account successfully deleted.", Toast.LENGTH_LONG).show();
+
+                            // Navigate back to the login screen
+                            Intent intent = new Intent(UserProfileActivity.this, login.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            String error = task.getException() != null ? task.getException().getMessage() : "Unknown error.";
+
+                            // Check for common security error
+                            if (error.contains("requires recent authentication")) {
+                                Toast.makeText(UserProfileActivity.this,
+                                        "Security Error: Please log out, log back in immediately, and try deleting again.",
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(UserProfileActivity.this,
+                                        "Failed to delete account: " + error,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        } else {
+            Toast.makeText(this, "No user currently logged in.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
