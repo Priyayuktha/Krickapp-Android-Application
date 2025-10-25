@@ -14,14 +14,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         
         // Check if user is already logged in
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -39,25 +37,19 @@ public class MainActivity extends AppCompatActivity {
         Button btnCreateAccount = findViewById(R.id.btn_create_account);
         Button btnLogin = findViewById(R.id.btn_login);
 
-        btnCreateAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // This is a placeholder for your navigation logic.
-//                Toast.makeText(MainActivity.this, "Create Account Clicked", Toast.LENGTH_SHORT).show();
-                // You can replace the line above with an Intent to start a new Activity:
-                Intent intent = new Intent(MainActivity.this, reg_account.class);
-                startActivity(intent);
-            }
+        btnCreateAccount.setOnClickListener(v -> {
+            // This is a placeholder for your navigation logic.
+            Toast.makeText(MainActivity.this, "Create Account Clicked", Toast.LENGTH_SHORT).show();
+            // You can replace the line above with an Intent to start a new Activity:
+            Intent intent = new Intent(MainActivity.this, reg_account.class);
+            startActivity(intent);
         });
 
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(MainActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
-                 Intent intent = new Intent(MainActivity.this, login.class);
-                startActivity(intent);
-            }
+        btnLogin.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
+             Intent intent = new Intent(MainActivity.this, login.class);
+            startActivity(intent);
         });
     }
 }

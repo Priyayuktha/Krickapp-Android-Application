@@ -34,19 +34,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
         Button sendInstructionsButton = findViewById(R.id.button_send_instructions);
 
         // 2. Set the click listener for the button
-        sendInstructionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptSendInstructions();
-            }
-        });
+        sendInstructionsButton.setOnClickListener(v -> attemptSendInstructions());
 
-       b2l.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = new Intent(ResetPasswordActivity.this, login.class);
-               startActivity(intent);
-           }
+       b2l.setOnClickListener(v -> {
+           Intent intent = new Intent(ResetPasswordActivity.this, login.class);
+           startActivity(intent);
        });
 
 

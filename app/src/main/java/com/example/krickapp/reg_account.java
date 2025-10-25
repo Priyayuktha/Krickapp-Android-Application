@@ -50,19 +50,9 @@ public class reg_account extends AppCompatActivity {
         TextView tvLogin = findViewById(R.id.tv_login);
         ImageView btnBack = findViewById(R.id.btn_back);
 
-        btnCreateAccountSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
-            }
-        });
+        btnCreateAccountSubmit.setOnClickListener(v -> registerUser());
 
-        tvLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(reg_account.this, login.class));
-            }
-        });
+        tvLogin.setOnClickListener(v -> startActivity(new Intent(reg_account.this, login.class)));
 
         btnBack.setOnClickListener(v -> finish());
     }
@@ -99,18 +89,15 @@ public class reg_account extends AppCompatActivity {
 
         // Create user with Firebase Authentication
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            String userId = mAuth.getCurrentUser().getUid();
-                            saveUserData(userId, fullName, email);
-                        } else {
-                            progressDialog.dismiss();
-                            Toast.makeText(reg_account.this,
-                                    "Authentication failed: " + task.getException().getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        String userId = mAuth.getCurrentUser().getUid();
+                        saveUserData(userId, fullName, email);
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(reg_account.this,
+                                "Authentication failed: " + task.getException().getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -119,20 +106,17 @@ public class reg_account extends AppCompatActivity {
         User user = new User(fullName, email);
 
         mDatabase.child("users").child(userId).setValue(user)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        progressDialog.dismiss();
-                        if(task.isSuccessful()){
-                            Toast.makeText(reg_account.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
-                            // Navigate to Dashboard instead of MainActivity
-                            Intent intent = new Intent(reg_account.this, DashboardActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(reg_account.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    progressDialog.dismiss();
+                    if(task.isSuccessful()){
+                        Toast.makeText(reg_account.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
+                        // Navigate to Dashboard instead of MainActivity
+                        Intent intent = new Intent(reg_account.this, DashboardActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(reg_account.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
