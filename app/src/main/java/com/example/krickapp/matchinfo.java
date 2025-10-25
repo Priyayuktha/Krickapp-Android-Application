@@ -1,23 +1,64 @@
 package com.example.krickapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class matchinfo extends AppCompatActivity {
 
-
+    private BottomNavigationView bottomNav;
+    private FloatingActionButton fabCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.matchinfo);
 
-        TextView tvTopBar = findViewById(R.id.tvTopBar);
-        tvTopBar.setOnClickListener(v -> finish());
+        // Back button
+        ImageView btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> finish());
 
+        // Setup bottom navigation
+        bottomNav = findViewById(R.id.bottom_nav);
+        fabCreate = findViewById(R.id.fab_create);
+        
+        bottomNav.setSelectedItemId(R.id.navigation_matches);
+        
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(this, DashboardActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_matches) {
+                startActivity(new Intent(this, MatchesListActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_create) {
+                startActivity(new Intent(this, create_match.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_live) {
+                Toast.makeText(this, "Live matches", Toast.LENGTH_SHORT).show();
+                return false;
+            } else if (itemId == R.id.navigation_more) {
+                Toast.makeText(this, "More options coming soon", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return false;
+        });
+        
+        fabCreate.setOnClickListener(v -> {
+            startActivity(new Intent(this, create_match.class));
+        });
 
         // Setup rows with icons + text
         setupRow(R.id.rowMatchType, R.drawable.matchtype, "Match Type", "T20");

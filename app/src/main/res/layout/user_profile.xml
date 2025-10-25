@@ -45,16 +45,6 @@
             app:cardCornerRadius="60dp"
             app:cardBackgroundColor="@color/profile_placeholder_bg"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add_picture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            app:srcCompat="@drawable/ic_add"
-            app:backgroundTint="@color/accent_blue"
-            app:tint="@color/white"
-            app:fabSize="mini"
-            android:contentDescription="@string/add_profile_picture" />
     </FrameLayout>
 
     <TextView

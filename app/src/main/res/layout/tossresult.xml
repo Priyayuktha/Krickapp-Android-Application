@@ -163,8 +163,10 @@
                 android:text="@string/save"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:background="@drawable/button_background_yellow"
                 android:textColor="@color/black"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black"
+                android:backgroundTint="@color/button_yellow"
                 android:layout_marginTop="48dp"
                 android:layout_marginBottom="16dp" />
 
@@ -179,14 +181,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_menu" />
-
-    <!-- FAB Center -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_create"
-        style="@style/Widget.App.FAB.Create"
-        android:src="@drawable/ic_add"
-        app:layout_anchor="@id/bottom_nav"
-        app:layout_anchorGravity="center"
-        android:contentDescription="@string/create" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

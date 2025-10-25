@@ -165,7 +165,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Buttons -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCancel"
         android:layout_width="0dp"
         android:layout_height="56dp"
@@ -173,7 +173,9 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:background="@drawable/create_match_cancel_button_background"
+        android:backgroundTint="@color/white"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/etMatchType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline"
@@ -189,8 +191,10 @@
         android:text="Next"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:background="@drawable/create_match_next_button_background"
         android:textColor="@color/black"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/black"
+        android:backgroundTint="@color/button_yellow"
         app:layout_constraintTop_toTopOf="@id/btnCancel"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -215,14 +219,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_menu" />
-
-    <!-- FAB -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_create"
-        style="@style/Widget.App.FAB.Create"
-        android:src="@drawable/ic_add"
-        app:layout_anchor="@id/bottom_nav"
-        app:layout_anchorGravity="center"
-        android:contentDescription="@string/create" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
