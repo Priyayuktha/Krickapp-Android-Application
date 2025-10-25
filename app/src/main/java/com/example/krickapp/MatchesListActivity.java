@@ -56,6 +56,19 @@ public class MatchesListActivity extends AppCompatActivity {
         
         bottomNav = findViewById(R.id.bottom_nav);
 
+        // Check if we should filter by status
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("filterStatus")) {
+            String filterStatus = intent.getStringExtra("filterStatus");
+            if ("live".equals(filterStatus)) {
+                currentTab = "live";
+            } else if ("completed".equals(filterStatus)) {
+                currentTab = "completed";
+            } else if ("upcoming".equals(filterStatus)) {
+                currentTab = "upcoming";
+            }
+        }
+
         // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         matchesList = new ArrayList<>();
@@ -82,21 +95,23 @@ public class MatchesListActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
-                startActivity(new Intent(this, DashboardActivity.class));
+                Intent homeIntent = new Intent(this, DashboardActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(homeIntent);
                 finish();
                 return true;
             } else if (itemId == R.id.navigation_matches) {
+                // Already on matches screen
                 return true;
             } else if (itemId == R.id.navigation_create) {
                 startActivity(new Intent(this, create_match.class));
-                finish();
                 return true;
             } else if (itemId == R.id.navigation_live) {
-                Toast.makeText(this, "Live matches", Toast.LENGTH_SHORT).show();
-                return false;
+                // Switch to live tab
+                selectTab("live");
+                return true;
             } else if (itemId == R.id.navigation_more) {
                 startActivity(new Intent(this, MoreActivity.class));
-                finish();
                 return true;
             }
             return false;
@@ -104,6 +119,9 @@ public class MatchesListActivity extends AppCompatActivity {
         
         // Load matches
         loadMatches();
+        
+        // Select the tab (this will also trigger filterMatches)
+        selectTab(currentTab);
     }
     
     private void selectTab(String tab) {

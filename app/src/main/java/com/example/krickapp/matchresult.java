@@ -127,16 +127,26 @@ public class matchresult extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.navigation_home) {
-                startActivity(new Intent(matchresult.this, DashboardActivity.class));
+                Intent homeIntent = new Intent(matchresult.this, DashboardActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(homeIntent);
+                finish();
                 return true;
             } else if (id == R.id.navigation_matches) {
-                startActivity(new Intent(matchresult.this, MatchesListActivity.class));
+                Intent matchesIntent = new Intent(matchresult.this, MatchesListActivity.class);
+                matchesIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(matchesIntent);
+                finish();
                 return true;
             } else if (id == R.id.navigation_create) {
                 startActivity(new Intent(matchresult.this, create_match.class));
                 return true;
             } else if (id == R.id.navigation_live) {
-                Toast.makeText(this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
+                Intent liveIntent = new Intent(matchresult.this, MatchesListActivity.class);
+                liveIntent.putExtra("filterStatus", "live");
+                liveIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(liveIntent);
+                finish();
                 return true;
             } else if (id == R.id.navigation_more) {
                 startActivity(new Intent(matchresult.this, MoreActivity.class));

@@ -68,23 +68,29 @@ public class scoredesk extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
-                startActivity(new Intent(this, DashboardActivity.class));
+                Intent intent = new Intent(this, DashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 finish();
                 return true;
             } else if (itemId == R.id.navigation_matches) {
-                startActivity(new Intent(this, MatchesListActivity.class));
+                Intent intent = new Intent(this, MatchesListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 finish();
                 return true;
             } else if (itemId == R.id.navigation_create) {
                 startActivity(new Intent(this, create_match.class));
-                finish();
                 return true;
             } else if (itemId == R.id.navigation_live) {
-                Toast.makeText(this, "Live matches", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MatchesListActivity.class);
+                intent.putExtra("filterStatus", "live");
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
                 return true;
             } else if (itemId == R.id.navigation_more) {
                 startActivity(new Intent(this, MoreActivity.class));
-                finish();
                 return true;
             }
             return false;

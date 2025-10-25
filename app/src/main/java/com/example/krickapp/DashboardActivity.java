@@ -67,23 +67,31 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Bottom Navigation logic (already correct)
+        // Bottom Navigation logic
+        bottomNav.setSelectedItemId(R.id.navigation_home);
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
             if (itemId == R.id.navigation_home) {
+                // Already on home screen
                 return true;
             } else if (itemId == R.id.navigation_matches) {
-                startActivity(new Intent(DashboardActivity.this, MatchesListActivity.class));
+                Intent intent = new Intent(DashboardActivity.this, MatchesListActivity.class);
+                startActivity(intent);
                 return true;
             } else if (itemId == R.id.navigation_create) {
-                startActivity(new Intent(DashboardActivity.this, create_match.class));
+                Intent intent = new Intent(DashboardActivity.this, create_match.class);
+                startActivity(intent);
                 return true;
             } else if (itemId == R.id.navigation_live) {
-                Toast.makeText(DashboardActivity.this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
+                // Navigate to live matches
+                Intent intent = new Intent(DashboardActivity.this, MatchesListActivity.class);
+                intent.putExtra("filterStatus", "live");
+                startActivity(intent);
                 return true;
             } else if (itemId == R.id.navigation_more) {
-                startActivity(new Intent(DashboardActivity.this, MoreActivity.class));
+                Intent intent = new Intent(DashboardActivity.this, MoreActivity.class);
+                startActivity(intent);
                 return true;
             }
             return false;
@@ -540,11 +548,18 @@ public class DashboardActivity extends AppCompatActivity {
         // 10. Add ConstraintLayout to CardView
         cardView.addView(constraintLayout);
 
-        // 11. Set click listener to open match details
+        // 11. Set click listener to open match summary for completed matches
         cardView.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, matchinfo.class);
-            intent.putExtra("matchId", match.getMatchId());
-            startActivity(intent);
+            if (match.getMatchId() != null) {
+                MatchSummaryHelper.launchMatchSummaryFromFirebase(
+                    DashboardActivity.this, 
+                    match.getMatchId()
+                );
+            } else {
+                Toast.makeText(DashboardActivity.this, 
+                    "Match details not available", 
+                    Toast.LENGTH_SHORT).show();
+            }
         });
 
         // 12. Add CardView to the container

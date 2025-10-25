@@ -224,19 +224,32 @@ public class MatchSummaryActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 
                 if (itemId == R.id.navigation_home) {
-                    startActivity(new Intent(MatchSummaryActivity.this, DashboardActivity.class));
+                    Intent intent = new Intent(MatchSummaryActivity.this, DashboardActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
                     return true;
                 } else if (itemId == R.id.navigation_matches) {
-                    startActivity(new Intent(MatchSummaryActivity.this, MatchesListActivity.class));
+                    Intent intent = new Intent(MatchSummaryActivity.this, MatchesListActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
                     return true;
                 } else if (itemId == R.id.navigation_create) {
-                    startActivity(new Intent(MatchSummaryActivity.this, create_match.class));
+                    Intent intent = new Intent(MatchSummaryActivity.this, create_match.class);
+                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.navigation_live) {
-                    // Navigate to Live activity (create if needed)
+                    // Navigate to live matches list filtered by status
+                    Intent intent = new Intent(MatchSummaryActivity.this, MatchesListActivity.class);
+                    intent.putExtra("filterStatus", "live");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
                     return true;
                 } else if (itemId == R.id.navigation_more) {
-                    startActivity(new Intent(MatchSummaryActivity.this, MoreActivity.class));
+                    Intent intent = new Intent(MatchSummaryActivity.this, MoreActivity.class);
+                    startActivity(intent);
                     return true;
                 }
                 return false;
@@ -518,31 +531,6 @@ public class MatchSummaryActivity extends AppCompatActivity {
                     "Failed to save summary: " + e.getMessage(), 
                     Toast.LENGTH_SHORT).show();
             });
-    }
-
-    // Method to load match summary data
-    public void loadMatchSummaryData(MatchSummaryData data) {
-        if (data != null) {
-            team1Name = data.getTeam1Name();
-            team2Name = data.getTeam2Name();
-            matchResult = data.getMatchResult();
-            playerOfMatch = data.getPlayerOfMatch();
-
-            // Update UI
-            tvMatchResult.setText(matchResult);
-            tvTeamsLabel.setText(team1Name + " vs " + team2Name);
-            tvPlayerOfMatch.setText(playerOfMatch);
-            btnTeam1.setText(team1Name);
-            btnTeam2.setText(team2Name);
-
-            // Clear existing over details
-            overDetailsContainer.removeAllViews();
-
-            // Add over details
-            for (MatchSummaryData.OverDetail overDetail : data.getOverDetails()) {
-                addOverDetailFromData(overDetail);
-            }
-        }
     }
 
     // Method to add over detail from MatchSummaryData.OverDetail object
