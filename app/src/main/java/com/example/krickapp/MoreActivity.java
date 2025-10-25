@@ -14,7 +14,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MoreActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNav;
-    private FloatingActionButton fabCreate;
     private LinearLayout menuAdminProfile, menuAbout, menuTerms, menuSupport;
 
     @Override
@@ -30,8 +29,7 @@ public class MoreActivity extends AppCompatActivity {
 
         // Setup bottom navigation
         bottomNav = findViewById(R.id.bottom_nav);
-        fabCreate = findViewById(R.id.fab_create);
-        
+
         bottomNav.setSelectedItemId(R.id.navigation_more);
         
         bottomNav.setOnItemSelectedListener(item -> {
@@ -55,10 +53,6 @@ public class MoreActivity extends AppCompatActivity {
                 return true;
             }
             return false;
-        });
-        
-        fabCreate.setOnClickListener(v -> {
-            startActivity(new Intent(this, create_match.class));
         });
 
         // Menu click listeners

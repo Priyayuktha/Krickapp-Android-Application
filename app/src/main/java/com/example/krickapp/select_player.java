@@ -30,7 +30,6 @@ public class select_player extends AppCompatActivity {
     RecyclerView rvPlayers;
     PlayerAdapter adapter;
     List<String> players;
-    FloatingActionButton fab;
     BottomNavigationView bottomNav;
     AppCompatButton btnAddPlayer;
 
@@ -40,7 +39,6 @@ public class select_player extends AppCompatActivity {
         setContentView(R.layout.select_player);
 
         rvPlayers = findViewById(R.id.rvPlayers);
-        fab = findViewById(R.id.fab_create);
         bottomNav = findViewById(R.id.bottom_nav);
         btnAddPlayer = findViewById(R.id.btnAddPlayer);
 
@@ -111,11 +109,6 @@ public class select_player extends AppCompatActivity {
                 return true;
             }
             return false;
-        });
-
-        // FAB
-        fab.setOnClickListener(v -> {
-            startActivity(new Intent(this, create_match.class));
         });
     }
 }

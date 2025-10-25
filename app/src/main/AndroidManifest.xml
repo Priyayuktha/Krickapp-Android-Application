@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -32,6 +35,11 @@
         <activity android:name=".MoreActivity" android:exported="false" android:label="More" />
         <activity android:name=".AboutActivity" android:exported="false" android:label="About" />
         <activity android:name=".TermsActivity" android:exported="false" android:label="Terms &amp; Conditions" />
+        <activity android:name=".tossresult" android:exported="false" android:label="Toss Result" />
+        <activity android:name=".matchinfo" android:exported="false" android:label="Match Details" />
+        <activity android:name=".scoredesk" android:exported="false" android:label="Score Desk" />
+        <activity android:name=".matchresult" android:exported="false" android:label="Match Result" />
+        <activity android:name=".select_player" android:exported="false" android:label="Select Players" />
     </application>
 
 </manifest>

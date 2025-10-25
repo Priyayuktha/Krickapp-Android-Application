@@ -44,7 +44,6 @@ public class scoredesk extends AppCompatActivity {
         tvBowler = findViewById(R.id.tvBowler);
         tvBowlerStat = findViewById(R.id.tvBowlerStat);
         bottomNav = findViewById(R.id.bottom_nav);
-        fab = findViewById(R.id.fab_create);
 
         // Keypad buttons
         setRunButton(R.id.btn0, 0);

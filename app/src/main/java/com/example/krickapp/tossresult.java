@@ -15,7 +15,6 @@ public class tossresult extends AppCompatActivity {
 
     Button btnTeamA, btnTeamB, btnBat, btnBowl, btnSave;
     BottomNavigationView bottomNav;
-    FloatingActionButton fab;
 
     String tossWinner = "";
     String tossDecision = "";
@@ -32,7 +31,6 @@ public class tossresult extends AppCompatActivity {
         btnBowl = findViewById(R.id.btnBowl);
         btnSave = findViewById(R.id.btnSave);
         bottomNav = findViewById(R.id.bottom_nav);
-        fab = findViewById(R.id.fab_create);
 
         // --- TEAM SELECTION ---
         btnTeamA.setOnClickListener(v -> {
@@ -94,10 +92,6 @@ public class tossresult extends AppCompatActivity {
 
             return false;
         });
-
-        fab.setOnClickListener(v ->
-                Toast.makeText(this, "Create New Match", Toast.LENGTH_SHORT).show()
-        );
     }
 
 

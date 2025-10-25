@@ -120,11 +120,6 @@ public class matchresult extends AppCompatActivity {
             }
             return false;
         });
-
-        // --- FAB ---
-        FloatingActionButton fab = findViewById(R.id.fab_create);
-        fab.setOnClickListener(v ->
-                Toast.makeText(this, "Create New Match", Toast.LENGTH_SHORT).show());
     }
 
     // helper to clear checkboxes when selecting a winner

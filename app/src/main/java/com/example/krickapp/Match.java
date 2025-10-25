@@ -44,7 +44,11 @@ public class Match {
         this.date = date;
         this.time = time;
         this.matchType = matchType;
+        this.createdAt = System.currentTimeMillis();
+        this.status = "scheduled";
     }
+    
+    private long createdAt;
 
     // Nested class for Team Details (Firebase needs this for structure)
     public static class Team {
@@ -79,6 +83,7 @@ public class Match {
     public String getStatus() { return status; }
     public Team getTeam1() { return team1; }
     public Team getTeam2() { return team2; }
+    public long getCreatedAt() { return createdAt; }
 
 
     // SETTERS
@@ -92,4 +97,5 @@ public class Match {
     public void setStatus(String status) { this.status = status; }
     public void setTeam1(Team team1) { this.team1 = team1; }
     public void setTeam2(Team team2) { this.team2 = team2; }
+    public void setCreatedAt(long createdAt) { this.createdAt = createdAt; }
 }

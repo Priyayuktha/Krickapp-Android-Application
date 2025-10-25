@@ -553,6 +553,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     // Renamed and updated existing method for Scheduled Matches
     private void addScheduledMatchCardToContainer(Match match) {
+        // Null safety check for match and teams
+        if (match == null || match.getTeam1() == null || match.getTeam2() == null) {
+            return;
+        }
+        
         // 1. Create a new CardView instance
         CardView cardView = new CardView(this);
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
@@ -574,10 +579,12 @@ public class DashboardActivity extends AppCompatActivity {
         ));
         constraintLayout.setPadding((int) (16 * getResources().getDisplayMetrics().density), (int) (16 * getResources().getDisplayMetrics().density), (int) (16 * getResources().getDisplayMetrics().density), (int) (16 * getResources().getDisplayMetrics().density)); // Converted 16dp padding
 
-        // 3. Create the Title TextView
+        // 3. Create the Title TextView with null checks
         TextView titleView = new TextView(this);
         titleView.setId(View.generateViewId());
-        titleView.setText(match.getTeam1().getTeamName() + " vs. " + match.getTeam2().getTeamName());
+        String team1Name = match.getTeam1().getTeamName() != null ? match.getTeam1().getTeamName() : "Team 1";
+        String team2Name = match.getTeam2().getTeamName() != null ? match.getTeam2().getTeamName() : "Team 2";
+        titleView.setText(team1Name + " vs. " + team2Name);
         titleView.setTextSize(16);
         titleView.setTextColor(0xFF000000);
 
@@ -589,9 +596,11 @@ public class DashboardActivity extends AppCompatActivity {
         titleParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
         titleView.setLayoutParams(titleParams);
 
-        // 4. Create the Time TextView
+        // 4. Create the Time TextView with null checks
         TextView timeView = new TextView(this);
-        timeView.setText(match.getDate() + ", " + match.getTime());
+        String date = match.getDate() != null ? match.getDate() : "TBD";
+        String time = match.getTime() != null ? match.getTime() : "TBD";
+        timeView.setText(date + ", " + time);
         timeView.setTextSize(14);
         timeView.setTextColor(0xFF888888);
 
