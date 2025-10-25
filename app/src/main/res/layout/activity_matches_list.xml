@@ -112,23 +112,6 @@
                     android:textColor="@color/text_secondary" />
             </LinearLayout>
 
-            <!-- Flip Coin Button (for Live tab) -->
-            <Button
-                android:id="@+id/btn_flip_coin"
-                android:layout_width="wrap_content"
-                android:layout_height="64dp"
-                android:text="Flip the Coin\nTo Toss"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/text_primary"
-                android:background="@drawable/tab_selected_background"
-                android:paddingStart="48dp"
-                android:paddingEnd="48dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="32dp"
-                android:visibility="gone"/>
-
         </LinearLayout>
     </ScrollView>
 

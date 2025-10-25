@@ -27,6 +27,7 @@
 
     <!-- Profile Screen -->
     <string name="admin_profile">Admin Profile</string>
+    <string name="profile_picture">Profile Picture</string>
     <string name="add_profile_picture">Add profile picture</string>
     <string name="name">Name</string>
     <string name="default_name">John Doe</string>

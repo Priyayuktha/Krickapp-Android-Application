@@ -35,8 +35,7 @@ public class MatchesListActivity extends AppCompatActivity {
     private ValueEventListener matchesListener;
     
     private TextView tabUpcoming, tabLive, tabCompleted;
-    private Button btnFlipCoin;
-    private String currentTab = "live";
+    private String currentTab = "upcoming";
     
     private BottomNavigationView bottomNav;
 
@@ -48,7 +47,6 @@ public class MatchesListActivity extends AppCompatActivity {
         // Initialize views
         recyclerView = findViewById(R.id.recycler_matches);
         emptyState = findViewById(R.id.empty_state);
-        btnFlipCoin = findViewById(R.id.btn_flip_coin);
         
         tabUpcoming = findViewById(R.id.tab_upcoming);
         tabLive = findViewById(R.id.tab_live);
@@ -83,11 +81,6 @@ public class MatchesListActivity extends AppCompatActivity {
         tabUpcoming.setOnClickListener(v -> selectTab("upcoming"));
         tabLive.setOnClickListener(v -> selectTab("live"));
         tabCompleted.setOnClickListener(v -> selectTab("completed"));
-        
-        // Flip coin button
-        btnFlipCoin.setOnClickListener(v -> {
-            startActivity(new Intent(this, tossresult.class));
-        });
         
         // Setup bottom navigation
         bottomNav.setSelectedItemId(R.id.navigation_matches);
@@ -146,19 +139,16 @@ public class MatchesListActivity extends AppCompatActivity {
                 tabUpcoming.setBackgroundResource(R.drawable.tab_selected_background);
                 tabUpcoming.setTextColor(getColor(R.color.text_primary));
                 tabUpcoming.setTypeface(null, android.graphics.Typeface.BOLD);
-                btnFlipCoin.setVisibility(View.GONE);
                 break;
             case "live":
                 tabLive.setBackgroundResource(R.drawable.tab_selected_background);
                 tabLive.setTextColor(getColor(R.color.text_primary));
                 tabLive.setTypeface(null, android.graphics.Typeface.BOLD);
-                btnFlipCoin.setVisibility(View.VISIBLE);
                 break;
             case "completed":
                 tabCompleted.setBackgroundResource(R.drawable.tab_selected_background);
                 tabCompleted.setTextColor(getColor(R.color.text_primary));
                 tabCompleted.setTypeface(null, android.graphics.Typeface.BOLD);
-                btnFlipCoin.setVisibility(View.GONE);
                 break;
         }
         

@@ -14,7 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MoreActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNav;
-    private LinearLayout menuAdminProfile, menuAbout, menuTerms, menuSupport;
+    private LinearLayout menuAdminProfile, menuAbout, menuTerms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,6 @@ public class MoreActivity extends AppCompatActivity {
         menuAdminProfile = findViewById(R.id.menu_admin_profile);
         menuAbout = findViewById(R.id.menu_about);
         menuTerms = findViewById(R.id.menu_terms);
-        menuSupport = findViewById(R.id.menu_support);
 
         // Setup bottom navigation
         bottomNav = findViewById(R.id.bottom_nav);
@@ -74,10 +73,6 @@ public class MoreActivity extends AppCompatActivity {
 
         menuTerms.setOnClickListener(v -> {
             startActivity(new Intent(this, TermsActivity.class));
-        });
-
-        menuSupport.setOnClickListener(v -> {
-            Toast.makeText(this, "Support: support@krickapp.com", Toast.LENGTH_LONG).show();
         });
     }
 }
