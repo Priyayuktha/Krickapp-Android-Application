@@ -40,6 +40,7 @@
         <activity android:name=".scoredesk" android:exported="false" android:label="Score Desk" />
         <activity android:name=".matchresult" android:exported="false" android:label="Match Result" />
         <activity android:name=".select_player" android:exported="false" android:label="Select Players" />
+        <activity android:name=".MatchSummaryActivity" android:exported="false" android:label="Match Summary" />
     </application>
 
 </manifest>
