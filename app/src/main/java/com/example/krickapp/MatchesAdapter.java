@@ -36,7 +36,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
         Match match = matchesList.get(position);
         holder.bind(match, context);
         
-        // Add click listener to open Match Summary for completed matches
+        // Add click listener to open appropriate screen based on match status
         holder.itemView.setOnClickListener(v -> {
             String status = match.getStatus() != null ? match.getStatus().toLowerCase() : "scheduled";
             
@@ -54,7 +54,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
                 intent.putExtra("matchId", match.getMatchId());
                 context.startActivity(intent);
             } else {
-                // Navigate to match info for scheduled matches
+                // For scheduled matches, open match info with option to start
                 Intent intent = new Intent(context, matchinfo.class);
                 intent.putExtra("matchId", match.getMatchId());
                 context.startActivity(intent);

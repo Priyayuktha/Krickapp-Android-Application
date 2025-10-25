@@ -2,6 +2,8 @@ package com.example.krickapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,8 @@ public class matchinfo extends AppCompatActivity {
     private BottomNavigationView bottomNav;
     private DatabaseReference mDatabase;
     private String matchId;
+    private Button btnStartMatch;
+    private Match currentMatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,12 @@ public class matchinfo extends AppCompatActivity {
         // Back button
         ImageView btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
+
+        // Start Match button
+        btnStartMatch = findViewById(R.id.btnStartMatch);
+        if (btnStartMatch != null) {
+            btnStartMatch.setOnClickListener(v -> startMatch());
+        }
 
         // Setup bottom navigation
         bottomNav = findViewById(R.id.bottom_nav);
@@ -102,6 +112,22 @@ public class matchinfo extends AppCompatActivity {
     }
 
     private void displayMatchData(Match match) {
+        currentMatch = match;
+        
+        // Show/hide Start Match button based on status
+        String status = match.getStatus() != null ? match.getStatus().toLowerCase() : "scheduled";
+        if (btnStartMatch != null) {
+            if (status.equals("scheduled")) {
+                btnStartMatch.setVisibility(View.VISIBLE);
+                btnStartMatch.setText("Start Match");
+            } else if (status.equals("live") || status.equals("ongoing")) {
+                btnStartMatch.setVisibility(View.VISIBLE);
+                btnStartMatch.setText("Continue Match");
+            } else {
+                btnStartMatch.setVisibility(View.GONE);
+            }
+        }
+        
         // Setup rows with actual match data
         String matchType = match.getMatchType() != null ? match.getMatchType() : "Not specified";
         String date = match.getDate() != null ? match.getDate() : "TBD";
@@ -120,14 +146,59 @@ public class matchinfo extends AppCompatActivity {
             team2Name = match.getTeam2().getTeamName();
         }
         
+        // Toss info
+        String tossInfo = "Not yet decided";
+        if (match.getTossWinner() != null && !match.getTossWinner().isEmpty()) {
+            tossInfo = match.getTossWinner() + " won, chose to " + 
+                      (match.getTossDecision() != null ? match.getTossDecision() : "bat");
+        }
+        
         // Setup info rows
         setupRow(R.id.rowMatchType, R.drawable.matchtype, "Match Type", matchType);
         setupRow(R.id.rowDate, R.drawable.date, "Date", date);
         setupRow(R.id.rowTime, R.drawable.time, "Time", time);
         setupRow(R.id.rowVenue, R.drawable.venue, "Venue", venue);
         setupRow(R.id.rowCity, R.drawable.city, "City", "Not specified");
-        setupRow(R.id.rowToss, R.drawable.toos, "Toss Win", "Not yet decided");
+        setupRow(R.id.rowToss, R.drawable.toos, "Toss Win", tossInfo);
         setupRow(R.id.rowHost, R.drawable.host, "Host", "Local Cricket Association");
+    }
+
+    // Start match flow
+    private void startMatch() {
+        if (currentMatch == null || matchId == null) {
+            Toast.makeText(this, "Match data not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        String status = currentMatch.getStatus() != null ? currentMatch.getStatus().toLowerCase() : "scheduled";
+        
+        if (status.equals("scheduled")) {
+            // First check if toss has been done
+            if (currentMatch.getTossWinner() == null || currentMatch.getTossWinner().isEmpty()) {
+                // Navigate to toss activity
+                Intent intent = new Intent(this, tossresult.class);
+                intent.putExtra("matchId", matchId);
+                String team1Name = currentMatch.getTeam1() != null ? 
+                                  currentMatch.getTeam1().getTeamName() : "Team 1";
+                String team2Name = currentMatch.getTeam2() != null ? 
+                                  currentMatch.getTeam2().getTeamName() : "Team 2";
+                intent.putExtra("team1", team1Name);
+                intent.putExtra("team2", team2Name);
+                startActivity(intent);
+            } else {
+                // Toss already done, go to score desk
+                navigateToScoreDesk();
+            }
+        } else if (status.equals("live") || status.equals("ongoing")) {
+            // Match is ongoing, continue to score desk
+            navigateToScoreDesk();
+        }
+    }
+
+    private void navigateToScoreDesk() {
+        Intent intent = new Intent(this, scoredesk.class);
+        intent.putExtra("matchId", matchId);
+        startActivity(intent);
     }
 
     private void setupRow(int rowId, int iconRes, String label, String value) {

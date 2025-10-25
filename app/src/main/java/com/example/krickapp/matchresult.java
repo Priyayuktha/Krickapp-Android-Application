@@ -25,6 +25,11 @@ public class matchresult extends AppCompatActivity {
     private String matchId;
     private String team1Name = "Team 1";
     private String team2Name = "Team 2";
+    private String tossWinner = "";
+    private String tossDecision = "";
+    private int totalRuns = 0;
+    private int totalWickets = 0;
+    private String totalOvers = "0.0";
     
     private DatabaseReference mDatabase;
 
@@ -40,10 +45,15 @@ public class matchresult extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             matchId = intent.getStringExtra("matchId");
-            team1Name = intent.getStringExtra("team1Name") != null ? 
-                       intent.getStringExtra("team1Name") : team1Name;
-            team2Name = intent.getStringExtra("team2Name") != null ? 
-                       intent.getStringExtra("team2Name") : team2Name;
+            team1Name = intent.getStringExtra("team1") != null ? 
+                       intent.getStringExtra("team1") : team1Name;
+            team2Name = intent.getStringExtra("team2") != null ? 
+                       intent.getStringExtra("team2") : team2Name;
+            tossWinner = intent.getStringExtra("tossWinner");
+            tossDecision = intent.getStringExtra("tossDecision");
+            totalRuns = intent.getIntExtra("totalRuns", 0);
+            totalWickets = intent.getIntExtra("totalWickets", 0);
+            totalOvers = intent.getStringExtra("totalOvers");
         }
 
         // Initialize
@@ -177,6 +187,11 @@ public class matchresult extends AppCompatActivity {
         summaryMap.put("isDraw", cbDraw.isChecked());
         summaryMap.put("isAbandoned", cbAbandoned.isChecked());
         summaryMap.put("considerNRR", cbNRR.isChecked());
+        summaryMap.put("totalRuns", totalRuns);
+        summaryMap.put("totalWickets", totalWickets);
+        summaryMap.put("totalOvers", totalOvers);
+        summaryMap.put("tossWinner", tossWinner);
+        summaryMap.put("tossDecision", tossDecision);
 
         // Save to Firebase
         mDatabase.child("matches").child(matchId).child("summary").updateChildren(summaryMap)

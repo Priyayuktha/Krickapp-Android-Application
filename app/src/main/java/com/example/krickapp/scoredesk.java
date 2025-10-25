@@ -7,10 +7,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Stack;
 
@@ -18,13 +24,22 @@ public class scoredesk extends AppCompatActivity {
 
     private TextView tvScore, tvOvers, tvBatsman1, tvBatsman1Stat, tvBatsman2, tvBatsman2Stat, tvBowler, tvBowlerStat;
     private BottomNavigationView bottomNav;
-    private FloatingActionButton fab;
 
     // Match State
     private int totalRuns = 0, totalWickets = 0, totalBalls = 0, maxOvers = 10;
     private int batsman1Runs = 0, batsman1Balls = 0;
     private int batsman2Runs = 0, batsman2Balls = 0;
     private int bowlerBalls = 0, bowlerRuns = 0, bowlerWickets = 0;
+
+    // Match data
+    private String matchId = "";
+    private String team1Name = "";
+    private String team2Name = "";
+    private String tossWinner = "";
+    private String tossDecision = "";
+
+    // Firebase
+    private DatabaseReference mDatabase;
 
     // To manage undo
     private Stack<Action> actionStack = new Stack<>();
@@ -33,6 +48,24 @@ public class scoredesk extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scoredesk);
+
+        // Initialize Firebase
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Get match data from intent
+        Intent intent = getIntent();
+        matchId = intent.getStringExtra("matchId");
+        team1Name = intent.getStringExtra("team1");
+        team2Name = intent.getStringExtra("team2");
+        tossWinner = intent.getStringExtra("tossWinner");
+        tossDecision = intent.getStringExtra("tossDecision");
+
+        if (matchId == null || matchId.isEmpty()) {
+            Toast.makeText(this, "Error: No match ID provided", Toast.LENGTH_SHORT).show();
+            // Don't finish - allow manual scoring for testing
+        } else {
+            loadMatchData();
+        }
 
         // Bind views
         tvScore = findViewById(R.id.tvScore);
@@ -60,33 +93,44 @@ public class scoredesk extends AppCompatActivity {
         findViewById(R.id.btnOUT).setOnClickListener(v -> addWicket());
         findViewById(R.id.btnUndo).setOnClickListener(v -> undoLastAction());
 
-        findViewById(R.id.btnEndMatch).setOnClickListener(v ->
-                Toast.makeText(this, "Match Ended!", Toast.LENGTH_SHORT).show()
-        );
+        findViewById(R.id.btnEndMatch).setOnClickListener(v -> {
+            // Navigate to match result
+            Intent resultIntent = new Intent(scoredesk.this, matchresult.class);
+            resultIntent.putExtra("matchId", matchId);
+            resultIntent.putExtra("team1", team1Name);
+            resultIntent.putExtra("team2", team2Name);
+            resultIntent.putExtra("tossWinner", tossWinner);
+            resultIntent.putExtra("tossDecision", tossDecision);
+            resultIntent.putExtra("totalRuns", totalRuns);
+            resultIntent.putExtra("totalWickets", totalWickets);
+            resultIntent.putExtra("totalOvers", (totalBalls / 6) + "." + (totalBalls % 6));
+            startActivity(resultIntent);
+            finish();
+        });
 
         // Bottom Navigation
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
-                Intent intent = new Intent(this, DashboardActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                Intent homeIntent = new Intent(this, DashboardActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(homeIntent);
                 finish();
                 return true;
             } else if (itemId == R.id.navigation_matches) {
-                Intent intent = new Intent(this, MatchesListActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                Intent matchesIntent = new Intent(this, MatchesListActivity.class);
+                matchesIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(matchesIntent);
                 finish();
                 return true;
             } else if (itemId == R.id.navigation_create) {
                 startActivity(new Intent(this, create_match.class));
                 return true;
             } else if (itemId == R.id.navigation_live) {
-                Intent intent = new Intent(this, MatchesListActivity.class);
-                intent.putExtra("filterStatus", "live");
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                Intent liveIntent = new Intent(this, MatchesListActivity.class);
+                liveIntent.putExtra("filterStatus", "live");
+                liveIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(liveIntent);
                 finish();
                 return true;
             } else if (itemId == R.id.navigation_more) {
@@ -94,11 +138,6 @@ public class scoredesk extends AppCompatActivity {
                 return true;
             }
             return false;
-        });
-
-        // FAB
-        fab.setOnClickListener(v -> {
-            startActivity(new Intent(this, create_match.class));
         });
 
         updateUI();
@@ -174,6 +213,43 @@ public class scoredesk extends AppCompatActivity {
         tvBatsman1Stat.setText(batsman1Runs + "(" + batsman1Balls + ")");
         tvBatsman2Stat.setText(batsman2Runs + "(" + batsman2Balls + ")");
         tvBowlerStat.setText(bowlerBalls + " " + bowlerWickets + " " + bowlerRuns);
+    }
+
+    /**
+     * Load match data from Firebase
+     */
+    private void loadMatchData() {
+        mDatabase.child("matches").child(matchId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Match match = snapshot.getValue(Match.class);
+                    if (match != null) {
+                        if (match.getTeam1() != null) {
+                            team1Name = match.getTeam1().getTeamName();
+                        }
+                        if (match.getTeam2() != null) {
+                            team2Name = match.getTeam2().getTeamName();
+                        }
+                        tossWinner = match.getTossWinner();
+                        tossDecision = match.getTossDecision();
+                        
+                        // Update team names in UI if needed
+                        if (tvBatsman1 != null && team1Name != null) {
+                            tvBatsman1.setText("Batsman 1");
+                        }
+                        if (tvBatsman2 != null && team2Name != null) {
+                            tvBatsman2.setText("Batsman 2");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(scoredesk.this, "Error loading match: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Action model for undo

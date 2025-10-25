@@ -12,6 +12,10 @@ public class Match {
     private String createdBy;
     private String status = "scheduled"; // Default status
 
+    // Toss Information
+    private String tossWinner;
+    private String tossDecision; // "bat" or "bowl"
+
     // Team Data
     private Team team1;
     private Team team2;
@@ -81,6 +85,8 @@ public class Match {
     public String getMatchType() { return matchType; }
     public String getCreatedBy() { return createdBy; }
     public String getStatus() { return status; }
+    public String getTossWinner() { return tossWinner; }
+    public String getTossDecision() { return tossDecision; }
     public Team getTeam1() { return team1; }
     public Team getTeam2() { return team2; }
     public long getCreatedAt() { return createdAt; }
@@ -95,6 +101,8 @@ public class Match {
     public void setMatchType(String matchType) { this.matchType = matchType; }
     public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
     public void setStatus(String status) { this.status = status; }
+    public void setTossWinner(String tossWinner) { this.tossWinner = tossWinner; }
+    public void setTossDecision(String tossDecision) { this.tossDecision = tossDecision; }
     public void setTeam1(Team team1) { this.team1 = team1; }
     public void setTeam2(Team team2) { this.team2 = team2; }
     public void setCreatedAt(long createdAt) { this.createdAt = createdAt; }

@@ -10,6 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class tossresult extends AppCompatActivity {
 
@@ -18,11 +23,31 @@ public class tossresult extends AppCompatActivity {
 
     String tossWinner = "";
     String tossDecision = "";
+    String matchId = "";
+    String team1Name = "";
+    String team2Name = "";
+
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tossresult);
+
+        // Initialize Firebase
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Get match data from intent
+        Intent intent = getIntent();
+        matchId = intent.getStringExtra("matchId");
+        team1Name = intent.getStringExtra("team1");
+        team2Name = intent.getStringExtra("team2");
+
+        if (matchId == null || matchId.isEmpty()) {
+            Toast.makeText(this, "Error: No match ID provided", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // find views
         btnTeamA = findViewById(R.id.btnTeamA);
@@ -32,15 +57,23 @@ public class tossresult extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         bottomNav = findViewById(R.id.bottom_nav);
 
+        // Set team names on buttons if available
+        if (team1Name != null && !team1Name.isEmpty()) {
+            btnTeamA.setText(team1Name);
+        }
+        if (team2Name != null && !team2Name.isEmpty()) {
+            btnTeamB.setText(team2Name);
+        }
+
         // --- TEAM SELECTION ---
         btnTeamA.setOnClickListener(v -> {
-            tossWinner = "Team A (TS)";
+            tossWinner = team1Name != null && !team1Name.isEmpty() ? team1Name : "Team A";
             highlightSelection(btnTeamA, btnTeamB);
             Toast.makeText(this, "Toss Winner: " + tossWinner, Toast.LENGTH_SHORT).show();
         });
 
         btnTeamB.setOnClickListener(v -> {
-            tossWinner = "Team B (SB)";
+            tossWinner = team2Name != null && !team2Name.isEmpty() ? team2Name : "Team B";
             highlightSelection(btnTeamB, btnTeamA);
             Toast.makeText(this, "Toss Winner: " + tossWinner, Toast.LENGTH_SHORT).show();
         });
@@ -63,10 +96,7 @@ public class tossresult extends AppCompatActivity {
             if (tossWinner.isEmpty() || tossDecision.isEmpty()) {
                 Toast.makeText(this, "Please select toss winner and decision!", Toast.LENGTH_SHORT).show();
             } else {
-                String result = tossWinner + " won the toss and chose to " + tossDecision;
-                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-
-                // 👉 later you can save to database or pass via Intent
+                saveTossAndStartMatch();
             }
         });
 
@@ -103,5 +133,37 @@ public class tossresult extends AppCompatActivity {
         selected.setAlpha(1.0f);
         // Unselected button: light transparent look
         other.setAlpha(0.5f);
+    }
+
+    /**
+     * Save toss result to Firebase and update match status to "live"
+     */
+    private void saveTossAndStartMatch() {
+        String result = tossWinner + " won the toss and chose to " + tossDecision;
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+
+        // Update match in Firebase
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("tossWinner", tossWinner);
+        updates.put("tossDecision", tossDecision);
+        updates.put("status", "live");
+
+        mDatabase.child("matches").child(matchId).updateChildren(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(tossresult.this, "Toss saved! Match is now live.", Toast.LENGTH_SHORT).show();
+                    
+                    // Navigate to score desk to start scoring
+                    Intent scoreDeskIntent = new Intent(tossresult.this, scoredesk.class);
+                    scoreDeskIntent.putExtra("matchId", matchId);
+                    scoreDeskIntent.putExtra("team1", team1Name);
+                    scoreDeskIntent.putExtra("team2", team2Name);
+                    scoreDeskIntent.putExtra("tossWinner", tossWinner);
+                    scoreDeskIntent.putExtra("tossDecision", tossDecision);
+                    startActivity(scoreDeskIntent);
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(tossresult.this, "Error saving toss: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }
