@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView; // New Import
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,17 +26,18 @@ public class TeamDetailsActivity extends AppCompatActivity {
     private final EditText[] playerEditTexts = new EditText[11];
     private Button saveBtn, btnTeam1, btnTeam2;
     private TextView pageTitle;
+    private BottomNavigationView bottomNav; // ADDED: Field for BottomNavigationView
     private int currentTeam = 1; // Track which team is currently being edited
-    
+
     // Store team data
     private String team1Name = "", team2Name = "";
     private final String[] team1Players = new String[11];
     private final String[] team2Players = new String[11];
-    
+
     // Firebase
     private DatabaseReference mDatabase;
     private ProgressDialog progressDialog;
-    
+
     // Match data from previous activity
     private String matchName, venue, date, time, matchType;
 
@@ -47,12 +49,12 @@ public class TeamDetailsActivity extends AppCompatActivity {
 
         // Initialize Firebase
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        
+
         // Initialize ProgressDialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Saving match...");
         progressDialog.setCancelable(false);
-        
+
         // Get match data from previous activity
         Intent intent = getIntent();
         matchName = intent.getStringExtra("matchName");
@@ -74,15 +76,16 @@ public class TeamDetailsActivity extends AppCompatActivity {
         playerEditTexts[8] = findViewById(R.id.etPlayer9);
         playerEditTexts[9] = findViewById(R.id.etPlayer10);
         playerEditTexts[10] = findViewById(R.id.etPlayer11);
-        
+
         saveBtn = findViewById(R.id.btnSave);
         btnTeam1 = findViewById(R.id.btnTeam1);
         btnTeam2 = findViewById(R.id.btnTeam2);
         pageTitle = findViewById(R.id.pageTitle);
+        bottomNav = findViewById(R.id.bottom_nav); // ADDED: Initialize BottomNavigationView
 
         // Set initial team
         pageTitle.setText("Enter Team 1 Details");
-        
+
         // Team 1 button click
         btnTeam1.setOnClickListener(v -> {
             saveCurrentTeamData();
@@ -103,11 +106,33 @@ public class TeamDetailsActivity extends AppCompatActivity {
 
         // Save button click
         saveBtn.setOnClickListener(v -> saveMatchToFirebase());
-        
+
+        // ADDED: Bottom Navigation Listener
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            // Assuming R.id.navHome is the ID for the Home icon in your bottom_nav_menu
+            if (itemId == R.id.navigation_home) {
+                Intent homeIntent = new Intent(TeamDetailsActivity.this, DashboardActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(homeIntent);
+                finish(); // Close this activity
+                return true;
+            }
+            // Handle other navigation items here (e.g., navschedule, navCreate, etc.)
+            else if (itemId == R.id.navigation_matches) {
+                startActivity(new Intent(TeamDetailsActivity.this, MatchesListActivity.class));
+                return true;
+            }
+            // For 'Create' icon, you are already in the match creation flow, so ignore or show a Toast.
+
+            return false;
+        });
+
         // Initialize button colors
         updateButtonColors();
     }
-    
+
     private void saveCurrentTeamData() {
         String[] players = (currentTeam == 1) ? team1Players : team2Players;
         if (currentTeam == 1) {
@@ -119,7 +144,7 @@ public class TeamDetailsActivity extends AppCompatActivity {
             players[i] = playerEditTexts[i].getText().toString().trim();
         }
     }
-    
+
     private void loadTeamData() {
         String name = (currentTeam == 1) ? team1Name : team2Name;
         String[] players = (currentTeam == 1) ? team1Players : team2Players;
@@ -128,7 +153,7 @@ public class TeamDetailsActivity extends AppCompatActivity {
             playerEditTexts[i].setText(players[i] != null ? players[i] : "");
         }
     }
-    
+
     private void updateButtonColors() {
         if (currentTeam == 1) {
             btnTeam1.setBackgroundColor(Color.parseColor("#FFD600")); // Yellow/Gold
@@ -138,60 +163,60 @@ public class TeamDetailsActivity extends AppCompatActivity {
             btnTeam2.setBackgroundColor(Color.parseColor("#FFD600")); // Yellow/Gold
         }
     }
-    
+
     private boolean validateAllData() {
         // Check if both teams have team name and all 11 players
         if (team1Name.isEmpty()) {
             Toast.makeText(this, "Please enter Team 1 name", Toast.LENGTH_SHORT).show();
             return false;
         }
-        
+
         for (int i = 0; i < 11; i++) {
             if (team1Players[i] == null || team1Players[i].isEmpty()) {
                 Toast.makeText(this, "Please enter all 11 players for Team 1", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
-        
+
         if (team2Name.isEmpty()) {
             Toast.makeText(this, "Please enter Team 2 name", Toast.LENGTH_SHORT).show();
             return false;
         }
-        
+
         for (int i = 0; i < 11; i++) {
             if (team2Players[i] == null || team2Players[i].isEmpty()) {
                 Toast.makeText(this, "Please enter all 11 players for Team 2", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
-            
+
         return true;
     }
-    
+
     private void saveMatchToFirebase() {
         saveCurrentTeamData();
-        
+
         if (!validateAllData()) {
             Toast.makeText(this, "Please complete both team details", Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
         // Show progress
         progressDialog.show();
-        
+
         // Get current user
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String creatorId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "unknown";
-        
+
         // Create unique match ID
         String matchId = mDatabase.child("matches").push().getKey();
-        
+
         if (matchId == null) {
             progressDialog.dismiss();
             Toast.makeText(this, "Failed to generate match ID", Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
         // Create match object
         Match match = new Match(matchName, venue, date, time, matchType);
         match.setCreatedBy(creatorId);
@@ -204,7 +229,7 @@ public class TeamDetailsActivity extends AppCompatActivity {
             }
         }
         match.setTeam1(new Match.Team(team1Name, team1PlayersList));
-        
+
         // Team 2 data
         Map<String, String> team2PlayersList = new HashMap<>();
         for (int i = 0; i < 11; i++) {
@@ -213,23 +238,23 @@ public class TeamDetailsActivity extends AppCompatActivity {
             }
         }
         match.setTeam2(new Match.Team(team2Name, team2PlayersList));
-        
+
         // Save to Firebase
         mDatabase.child("matches").child(matchId).setValue(match)
-            .addOnCompleteListener(task -> {
-                progressDialog.dismiss();
-                if (task.isSuccessful()) {
-                    Toast.makeText(this, "Match created successfully!", Toast.LENGTH_SHORT).show();
-                    // Navigate back to dashboard
-                    Intent intent = new Intent(TeamDetailsActivity.this, DashboardActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(this, "Failed to save match: " + 
-                        (task.getException() != null ? task.getException().getMessage() : "Unknown error"), 
-                        Toast.LENGTH_LONG).show();
-                }
-            });
+                .addOnCompleteListener(task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Match created successfully!", Toast.LENGTH_SHORT).show();
+                        // Navigate back to dashboard
+                        Intent intent = new Intent(TeamDetailsActivity.this, DashboardActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Failed to save match: " +
+                                        (task.getException() != null ? task.getException().getMessage() : "Unknown error"),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
