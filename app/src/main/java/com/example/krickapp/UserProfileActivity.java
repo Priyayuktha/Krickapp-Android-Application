@@ -25,7 +25,6 @@ public class UserProfileActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Initialize UI components (EditTexts and Buttons)
-        FloatingActionButton fabAddPicture = findViewById(R.id.fab_add_picture);
 
         // Initialize the inner EditText fields (using the new IDs from the XML)
         etName = findViewById(R.id.et_name);
@@ -38,11 +37,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // Load and display user data
         loadUserProfile();
-
-        // Set click listeners
-        fabAddPicture.setOnClickListener(v ->
-                Toast.makeText(UserProfileActivity.this, "Add new profile picture functionality TBD", Toast.LENGTH_SHORT).show()
-        );
 
         btnLogout.setOnClickListener(v -> showLogoutDialog());
 
