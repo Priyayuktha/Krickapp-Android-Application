@@ -13,12 +13,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Calendar;
 
 public class create_match extends AppCompatActivity {
 
     EditText etMatchName, etVenue, etDate, etTime, etMatchType;
     Button btnCancel, btnNext;
+    BottomNavigationView bottomNav;
+    FloatingActionButton fabCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,43 @@ public class create_match extends AppCompatActivity {
 
         btnCancel = findViewById(R.id.btnCancel);
         btnNext = findViewById(R.id.btnNext);
+
+        // Setup bottom navigation
+        bottomNav = findViewById(R.id.bottom_nav);
+        fabCreate = findViewById(R.id.fab_create);
+
+        // Set Create as selected
+        bottomNav.setSelectedItemId(R.id.navigation_create);
+
+        // Handle navigation
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(this, DashboardActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_matches) {
+                startActivity(new Intent(this, MatchesListActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_create) {
+                // Already on create screen
+                return true;
+            } else if (itemId == R.id.navigation_live) {
+                Toast.makeText(this, "Live matches coming soon", Toast.LENGTH_SHORT).show();
+                return false;
+            } else if (itemId == R.id.navigation_more) {
+                Toast.makeText(this, "More options coming soon", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return false;
+        });
+
+        // FAB should also stay on this screen since we're creating
+        fabCreate.setOnClickListener(v -> {
+            // Already on create screen, do nothing or scroll to top
+            Toast.makeText(this, "Fill the form to create a match", Toast.LENGTH_SHORT).show();
+        });
 
         // Date Picker
         etDate.setOnClickListener(v -> {
