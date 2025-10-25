@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -20,17 +19,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class reset_password extends AppCompatActivity {
+public class TeamDetailsActivity extends AppCompatActivity {
 
-    EditText teamName, player1, player2, player3, player4, player5, player6, player7, player8, player9, player10, player11;
-    Button saveBtn, btnTeam1, btnTeam2;
-    TextView pageTitle;
-    int currentTeam = 1; // Track which team is currently being edited
+    private EditText teamName;
+    private final EditText[] playerEditTexts = new EditText[11];
+    private Button saveBtn, btnTeam1, btnTeam2;
+    private TextView pageTitle;
+    private int currentTeam = 1; // Track which team is currently being edited
     
     // Store team data
-    String team1Name = "", team2Name = "";
-    String[] team1Players = new String[11];
-    String[] team2Players = new String[11];
+    private String team1Name = "", team2Name = "";
+    private final String[] team1Players = new String[11];
+    private final String[] team2Players = new String[11];
     
     // Firebase
     private DatabaseReference mDatabase;
@@ -63,17 +63,17 @@ public class reset_password extends AppCompatActivity {
 
         // Initialize views
         teamName = findViewById(R.id.etTeamName);
-        player1 = findViewById(R.id.etPlayer1);
-        player2 = findViewById(R.id.etPlayer2);
-        player3 = findViewById(R.id.etPlayer3);
-        player4 = findViewById(R.id.etPlayer4);
-        player5 = findViewById(R.id.etPlayer5);
-        player6 = findViewById(R.id.etPlayer6);
-        player7 = findViewById(R.id.etPlayer7);
-        player8 = findViewById(R.id.etPlayer8);
-        player9 = findViewById(R.id.etPlayer9);
-        player10 = findViewById(R.id.etPlayer10);
-        player11 = findViewById(R.id.etPlayer11);
+        playerEditTexts[0] = findViewById(R.id.etPlayer1);
+        playerEditTexts[1] = findViewById(R.id.etPlayer2);
+        playerEditTexts[2] = findViewById(R.id.etPlayer3);
+        playerEditTexts[3] = findViewById(R.id.etPlayer4);
+        playerEditTexts[4] = findViewById(R.id.etPlayer5);
+        playerEditTexts[5] = findViewById(R.id.etPlayer6);
+        playerEditTexts[6] = findViewById(R.id.etPlayer7);
+        playerEditTexts[7] = findViewById(R.id.etPlayer8);
+        playerEditTexts[8] = findViewById(R.id.etPlayer9);
+        playerEditTexts[9] = findViewById(R.id.etPlayer10);
+        playerEditTexts[10] = findViewById(R.id.etPlayer11);
         
         saveBtn = findViewById(R.id.btnSave);
         btnTeam1 = findViewById(R.id.btnTeam1);
@@ -102,71 +102,30 @@ public class reset_password extends AppCompatActivity {
         });
 
         // Save button click
-        saveBtn.setOnClickListener(v -> {
-            saveMatchToFirebase();
-        });
+        saveBtn.setOnClickListener(v -> saveMatchToFirebase());
         
         // Initialize button colors
         updateButtonColors();
     }
     
     private void saveCurrentTeamData() {
+        String[] players = (currentTeam == 1) ? team1Players : team2Players;
         if (currentTeam == 1) {
             team1Name = teamName.getText().toString().trim();
-            team1Players[0] = player1.getText().toString().trim();
-            team1Players[1] = player2.getText().toString().trim();
-            team1Players[2] = player3.getText().toString().trim();
-            team1Players[3] = player4.getText().toString().trim();
-            team1Players[4] = player5.getText().toString().trim();
-            team1Players[5] = player6.getText().toString().trim();
-            team1Players[6] = player7.getText().toString().trim();
-            team1Players[7] = player8.getText().toString().trim();
-            team1Players[8] = player9.getText().toString().trim();
-            team1Players[9] = player10.getText().toString().trim();
-            team1Players[10] = player11.getText().toString().trim();
         } else {
             team2Name = teamName.getText().toString().trim();
-            team2Players[0] = player1.getText().toString().trim();
-            team2Players[1] = player2.getText().toString().trim();
-            team2Players[2] = player3.getText().toString().trim();
-            team2Players[3] = player4.getText().toString().trim();
-            team2Players[4] = player5.getText().toString().trim();
-            team2Players[5] = player6.getText().toString().trim();
-            team2Players[6] = player7.getText().toString().trim();
-            team2Players[7] = player8.getText().toString().trim();
-            team2Players[8] = player9.getText().toString().trim();
-            team2Players[9] = player10.getText().toString().trim();
-            team2Players[10] = player11.getText().toString().trim();
+        }
+        for (int i = 0; i < 11; i++) {
+            players[i] = playerEditTexts[i].getText().toString().trim();
         }
     }
     
     private void loadTeamData() {
-        if (currentTeam == 1) {
-            teamName.setText(team1Name);
-            player1.setText(team1Players[0] != null ? team1Players[0] : "");
-            player2.setText(team1Players[1] != null ? team1Players[1] : "");
-            player3.setText(team1Players[2] != null ? team1Players[2] : "");
-            player4.setText(team1Players[3] != null ? team1Players[3] : "");
-            player5.setText(team1Players[4] != null ? team1Players[4] : "");
-            player6.setText(team1Players[5] != null ? team1Players[5] : "");
-            player7.setText(team1Players[6] != null ? team1Players[6] : "");
-            player8.setText(team1Players[7] != null ? team1Players[7] : "");
-            player9.setText(team1Players[8] != null ? team1Players[8] : "");
-            player10.setText(team1Players[9] != null ? team1Players[9] : "");
-            player11.setText(team1Players[10] != null ? team1Players[10] : "");
-        } else {
-            teamName.setText(team2Name);
-            player1.setText(team2Players[0] != null ? team2Players[0] : "");
-            player2.setText(team2Players[1] != null ? team2Players[1] : "");
-            player3.setText(team2Players[2] != null ? team2Players[2] : "");
-            player4.setText(team2Players[3] != null ? team2Players[3] : "");
-            player5.setText(team2Players[4] != null ? team2Players[4] : "");
-            player6.setText(team2Players[5] != null ? team2Players[5] : "");
-            player7.setText(team2Players[6] != null ? team2Players[6] : "");
-            player8.setText(team2Players[7] != null ? team2Players[7] : "");
-            player9.setText(team2Players[8] != null ? team2Players[8] : "");
-            player10.setText(team2Players[9] != null ? team2Players[9] : "");
-            player11.setText(team2Players[10] != null ? team2Players[10] : "");
+        String name = (currentTeam == 1) ? team1Name : team2Name;
+        String[] players = (currentTeam == 1) ? team1Players : team2Players;
+        teamName.setText(name);
+        for (int i = 0; i < 11; i++) {
+            playerEditTexts[i].setText(players[i] != null ? players[i] : "");
         }
     }
     
@@ -234,39 +193,26 @@ public class reset_password extends AppCompatActivity {
         }
         
         // Create match object
-        Map<String, Object> match = new HashMap<>();
-        match.put("matchName", matchName != null ? matchName : "");
-        match.put("venue", venue != null ? venue : "");
-        match.put("date", date != null ? date : "");
-        match.put("time", time != null ? time : "");
-        match.put("matchType", matchType != null ? matchType : "");
-        match.put("status", "scheduled");
-        match.put("createdBy", creatorId);
-        match.put("createdAt", System.currentTimeMillis());
-        
+        Match match = new Match(matchName, venue, date, time, matchType);
+        match.setCreatedBy(creatorId);
+
         // Team 1 data
-        Map<String, Object> team1Data = new HashMap<>();
-        team1Data.put("name", team1Name);
         Map<String, String> team1PlayersList = new HashMap<>();
         for (int i = 0; i < 11; i++) {
             if (team1Players[i] != null && !team1Players[i].isEmpty()) {
                 team1PlayersList.put("player" + (i + 1), team1Players[i]);
             }
         }
-        team1Data.put("players", team1PlayersList);
-        match.put("team1", team1Data);
+        match.setTeam1(new Match.Team(team1Name, team1PlayersList));
         
         // Team 2 data
-        Map<String, Object> team2Data = new HashMap<>();
-        team2Data.put("name", team2Name);
         Map<String, String> team2PlayersList = new HashMap<>();
         for (int i = 0; i < 11; i++) {
             if (team2Players[i] != null && !team2Players[i].isEmpty()) {
                 team2PlayersList.put("player" + (i + 1), team2Players[i]);
             }
         }
-        team2Data.put("players", team2PlayersList);
-        match.put("team2", team2Data);
+        match.setTeam2(new Match.Team(team2Name, team2PlayersList));
         
         // Save to Firebase
         mDatabase.child("matches").child(matchId).setValue(match)
@@ -275,7 +221,7 @@ public class reset_password extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Toast.makeText(this, "Match created successfully!", Toast.LENGTH_SHORT).show();
                     // Navigate back to dashboard
-                    Intent intent = new Intent(reset_password.this, DashboardActivity.class);
+                    Intent intent = new Intent(TeamDetailsActivity.this, DashboardActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();

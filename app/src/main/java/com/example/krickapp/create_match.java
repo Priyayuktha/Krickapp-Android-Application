@@ -80,7 +80,7 @@ public class create_match extends AppCompatActivity {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Pass data directly to team details activity
-                Intent intent = new Intent(create_match.this, reset_password.class);
+                Intent intent = new Intent(create_match.this, TeamDetailsActivity.class);
                 intent.putExtra("matchName", matchName);
                 intent.putExtra("venue", venue);
                 intent.putExtra("date", date);

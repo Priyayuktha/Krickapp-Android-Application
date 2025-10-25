@@ -23,7 +23,7 @@ public class TeamSelectionActivity extends AppCompatActivity {
         matchType = intent.getStringExtra("matchType");
 
         // Directly open team details page with both teams
-        Intent teamIntent = new Intent(TeamSelectionActivity.this, reset_password.class);
+        Intent teamIntent = new Intent(TeamSelectionActivity.this, TeamDetailsActivity.class);
         teamIntent.putExtra("matchName", matchName);
         teamIntent.putExtra("venue", venue);
         teamIntent.putExtra("date", date);
