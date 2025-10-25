@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class matchresult extends AppCompatActivity {
 
@@ -20,11 +22,29 @@ public class matchresult extends AppCompatActivity {
     private EditText etResultInfo;
 
     private String winner = "";   // store winner
+    private String matchId;
+    private String team1Name = "Team 1";
+    private String team2Name = "Team 2";
+    
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.matchresult);
+
+        // Initialize Firebase
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Get match data from intent
+        Intent intent = getIntent();
+        if (intent != null) {
+            matchId = intent.getStringExtra("matchId");
+            team1Name = intent.getStringExtra("team1Name") != null ? 
+                       intent.getStringExtra("team1Name") : team1Name;
+            team2Name = intent.getStringExtra("team2Name") != null ? 
+                       intent.getStringExtra("team2Name") : team2Name;
+        }
 
         // Initialize
         btnTeam1 = findViewById(R.id.btnTeam1);
@@ -36,20 +56,24 @@ public class matchresult extends AppCompatActivity {
         cbAbandoned = findViewById(R.id.cbAbandoned);
         etResultInfo = findViewById(R.id.etResultInfo);
 
+        // Set team names on buttons
+        btnTeam1.setText(team1Name);
+        btnTeam2.setText(team2Name);
+
         // --- TEAM 1 ---
         btnTeam1.setOnClickListener(v -> {
-            winner = "Team 1";
+            winner = team1Name;
             etResultInfo.setText(winner + " won the match");
             clearCheckBoxes(); // clear draw/abandoned if selecting winner
-            Toast.makeText(this, "Team 1 Selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, team1Name + " Selected", Toast.LENGTH_SHORT).show();
         });
 
         // --- TEAM 2 ---
         btnTeam2.setOnClickListener(v -> {
-            winner = "Team 2";
+            winner = team2Name;
             etResultInfo.setText(winner + " won the match");
             clearCheckBoxes();
-            Toast.makeText(this, "Team 2 Selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, team2Name + " Selected", Toast.LENGTH_SHORT).show();
         });
 
         // --- CHECKBOXES ---
@@ -93,8 +117,8 @@ public class matchresult extends AppCompatActivity {
             if (result.isEmpty()) {
                 Toast.makeText(this, "Please select a result!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Match Result Saved: " + result, Toast.LENGTH_LONG).show();
-                // 👉 Later: save to DB or pass via intent
+                // Save to Firebase
+                saveMatchResultToFirebase(result);
             }
         });
 
@@ -127,5 +151,50 @@ public class matchresult extends AppCompatActivity {
         cbDraw.setChecked(false);
         cbAbandoned.setChecked(false);
         // do not clear NRR, allow user to tick it with winner
+    }
+
+    // Save match result to Firebase
+    private void saveMatchResultToFirebase(String result) {
+        if (matchId == null || matchId.isEmpty()) {
+            Toast.makeText(this, "No match ID available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create summary data
+        java.util.HashMap<String, Object> summaryMap = new java.util.HashMap<>();
+        summaryMap.put("matchResult", result);
+        summaryMap.put("winner", winner);
+        summaryMap.put("isDraw", cbDraw.isChecked());
+        summaryMap.put("isAbandoned", cbAbandoned.isChecked());
+        summaryMap.put("considerNRR", cbNRR.isChecked());
+
+        // Save to Firebase
+        mDatabase.child("matches").child(matchId).child("summary").updateChildren(summaryMap)
+            .addOnSuccessListener(aVoid -> {
+                // Update match status to completed
+                mDatabase.child("matches").child(matchId).child("status").setValue("completed")
+                    .addOnSuccessListener(aVoid2 -> {
+                        Toast.makeText(this, "Match Result Saved!", Toast.LENGTH_SHORT).show();
+                        
+                        // Navigate to Match Summary page
+                        MatchSummaryHelper.launchMatchSummary(
+                            matchresult.this,
+                            matchId,
+                            team1Name,
+                            team2Name,
+                            result,
+                            "To be decided" // Player of match can be updated later
+                        );
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Failed to update status: " + e.getMessage(), 
+                            Toast.LENGTH_SHORT).show();
+                    });
+            })
+            .addOnFailureListener(e -> {
+                Toast.makeText(this, "Failed to save result: " + e.getMessage(), 
+                    Toast.LENGTH_SHORT).show();
+            });
     }
 }

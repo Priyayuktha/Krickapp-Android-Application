@@ -1,12 +1,14 @@
 package com.example.krickapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -33,6 +35,31 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
     public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
         Match match = matchesList.get(position);
         holder.bind(match, context);
+        
+        // Add click listener to open Match Summary for completed matches
+        holder.itemView.setOnClickListener(v -> {
+            String status = match.getStatus() != null ? match.getStatus().toLowerCase() : "scheduled";
+            
+            if (status.equals("completed")) {
+                // Open match summary for completed matches
+                if (context instanceof AppCompatActivity) {
+                    MatchSummaryHelper.launchMatchSummaryFromFirebase(
+                        (AppCompatActivity) context, 
+                        match.getMatchId()
+                    );
+                }
+            } else if (status.equals("ongoing") || status.equals("live")) {
+                // Navigate to score desk for live matches
+                Intent intent = new Intent(context, scoredesk.class);
+                intent.putExtra("matchId", match.getMatchId());
+                context.startActivity(intent);
+            } else {
+                // Navigate to match info for scheduled matches
+                Intent intent = new Intent(context, matchinfo.class);
+                intent.putExtra("matchId", match.getMatchId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

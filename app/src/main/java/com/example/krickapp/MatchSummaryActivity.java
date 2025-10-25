@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class MatchSummaryActivity extends AppCompatActivity {
 
@@ -24,6 +30,10 @@ public class MatchSummaryActivity extends AppCompatActivity {
     private Button btnTeam2;
     private LinearLayout overDetailsContainer;
     private BottomNavigationView bottomNav;
+
+    // Firebase
+    private DatabaseReference mDatabase;
+    private String matchId;
 
     // Sample data - replace with actual data from Firebase or intent extras
     private String team1Name = "Team 1";
@@ -36,6 +46,9 @@ public class MatchSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_summary);
+
+        // Initialize Firebase
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Initialize views
         initializeViews();
@@ -51,6 +64,11 @@ public class MatchSummaryActivity extends AppCompatActivity {
 
         // Set up team button listeners
         setupTeamButtons();
+
+        // Load match data from Firebase if matchId is provided
+        if (matchId != null && !matchId.isEmpty()) {
+            loadMatchDataFromFirebase();
+        }
     }
 
     private void initializeViews() {
@@ -66,6 +84,7 @@ public class MatchSummaryActivity extends AppCompatActivity {
     private void getIntentData() {
         Intent intent = getIntent();
         if (intent != null) {
+            matchId = intent.getStringExtra("matchId");
             team1Name = intent.getStringExtra("team1Name") != null ? 
                         intent.getStringExtra("team1Name") : team1Name;
             team2Name = intent.getStringExtra("team2Name") != null ? 
@@ -111,7 +130,10 @@ public class MatchSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 selectedTeam = 1;
                 updateTeamButtonSelection();
-                // Load Team 1 over details here
+                // Load Team 1 over details
+                if (matchId != null && !matchId.isEmpty()) {
+                    loadTeamOversFromFirebase(1);
+                }
             }
         });
 
@@ -120,7 +142,55 @@ public class MatchSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 selectedTeam = 2;
                 updateTeamButtonSelection();
-                // Load Team 2 over details here
+                // Load Team 2 over details
+                if (matchId != null && !matchId.isEmpty()) {
+                    loadTeamOversFromFirebase(2);
+                }
+            }
+        });
+    }
+
+    // Load specific team's overs from Firebase
+    private void loadTeamOversFromFirebase(int teamNumber) {
+        if (matchId == null || matchId.isEmpty()) {
+            return;
+        }
+
+        String oversKey = teamNumber == 1 ? "team1Overs" : "team2Overs";
+        DatabaseReference oversRef = mDatabase.child("matches").child(matchId)
+                                             .child("summary").child(oversKey);
+        
+        oversRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Clear existing overs
+                overDetailsContainer.removeAllViews();
+
+                if (snapshot.exists()) {
+                    for (DataSnapshot overSnapshot : snapshot.getChildren()) {
+                        try {
+                            MatchSummaryData.OverDetail overDetail = 
+                                overSnapshot.getValue(MatchSummaryData.OverDetail.class);
+                            if (overDetail != null) {
+                                addOverDetailFromData(overDetail);
+                            }
+                        } catch (Exception e) {
+                            // Skip invalid over data
+                        }
+                    }
+                } else {
+                    // No data for this team
+                    Toast.makeText(MatchSummaryActivity.this, 
+                        "No over details available for this team", 
+                        Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MatchSummaryActivity.this, 
+                    "Failed to load overs: " + error.getMessage(), 
+                    Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -256,6 +326,198 @@ public class MatchSummaryActivity extends AppCompatActivity {
         divider.setLayoutParams(dividerParams);
         divider.setBackgroundColor(Color.parseColor("#E0E0E0"));
         overDetailsContainer.addView(divider);
+    }
+
+    // Method to load match summary data
+    public void loadMatchSummaryData(MatchSummaryData data) {
+        if (data != null) {
+            team1Name = data.getTeam1Name();
+            team2Name = data.getTeam2Name();
+            matchResult = data.getMatchResult();
+            playerOfMatch = data.getPlayerOfMatch();
+
+            // Update UI
+            tvMatchResult.setText(matchResult);
+            tvTeamsLabel.setText(team1Name + " vs " + team2Name);
+            tvPlayerOfMatch.setText(playerOfMatch);
+            btnTeam1.setText(team1Name);
+            btnTeam2.setText(team2Name);
+
+            // Clear existing over details
+            overDetailsContainer.removeAllViews();
+
+            // Add over details
+            for (MatchSummaryData.OverDetail overDetail : data.getOverDetails()) {
+                addOverDetailFromData(overDetail);
+            }
+        }
+    }
+
+    // Load match data from Firebase
+    private void loadMatchDataFromFirebase() {
+        if (matchId == null || matchId.isEmpty()) {
+            Toast.makeText(this, "No match ID provided", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference matchRef = mDatabase.child("matches").child(matchId);
+        
+        matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    try {
+                        Match match = snapshot.getValue(Match.class);
+                        if (match != null) {
+                            // Load basic match info
+                            if (match.getTeam1() != null) {
+                                team1Name = match.getTeam1().getTeamName();
+                            }
+                            if (match.getTeam2() != null) {
+                                team2Name = match.getTeam2().getTeamName();
+                            }
+
+                            // Load match result from summary node
+                            loadMatchSummaryFromFirebase();
+                            
+                            // Update basic UI
+                            tvTeamsLabel.setText(team1Name + " vs " + team2Name);
+                            btnTeam1.setText(team1Name);
+                            btnTeam2.setText(team2Name);
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(MatchSummaryActivity.this, 
+                            "Error loading match: " + e.getMessage(), 
+                            Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MatchSummaryActivity.this, 
+                    "Failed to load match: " + error.getMessage(), 
+                    Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Load match summary details from Firebase
+    private void loadMatchSummaryFromFirebase() {
+        if (matchId == null || matchId.isEmpty()) {
+            return;
+        }
+
+        DatabaseReference summaryRef = mDatabase.child("matches").child(matchId).child("summary");
+        
+        summaryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    try {
+                        // Load match result
+                        if (snapshot.hasChild("matchResult")) {
+                            matchResult = snapshot.child("matchResult").getValue(String.class);
+                            if (matchResult != null) {
+                                tvMatchResult.setText(matchResult);
+                            }
+                        }
+
+                        // Load player of the match
+                        if (snapshot.hasChild("playerOfMatch")) {
+                            playerOfMatch = snapshot.child("playerOfMatch").getValue(String.class);
+                            if (playerOfMatch != null) {
+                                tvPlayerOfMatch.setText(playerOfMatch);
+                            }
+                        }
+
+                        // Load over details for both teams
+                        if (snapshot.hasChild("team1Overs")) {
+                            loadOversFromSnapshot(snapshot.child("team1Overs"), 1);
+                        }
+                        
+                        if (snapshot.hasChild("team2Overs")) {
+                            loadOversFromSnapshot(snapshot.child("team2Overs"), 2);
+                        }
+
+                        // If no over details exist, show sample data
+                        if (!snapshot.hasChild("team1Overs") && !snapshot.hasChild("team2Overs")) {
+                            Toast.makeText(MatchSummaryActivity.this, 
+                                "No over details available", 
+                                Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        Toast.makeText(MatchSummaryActivity.this, 
+                            "Error loading summary: " + e.getMessage(), 
+                            Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MatchSummaryActivity.this, 
+                    "Failed to load summary: " + error.getMessage(), 
+                    Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Load overs from Firebase snapshot
+    private void loadOversFromSnapshot(DataSnapshot oversSnapshot, int teamNumber) {
+        // Clear existing overs for this team if reloading
+        if (teamNumber == selectedTeam) {
+            overDetailsContainer.removeAllViews();
+        }
+
+        for (DataSnapshot overSnapshot : oversSnapshot.getChildren()) {
+            try {
+                MatchSummaryData.OverDetail overDetail = overSnapshot.getValue(MatchSummaryData.OverDetail.class);
+                if (overDetail != null && teamNumber == selectedTeam) {
+                    addOverDetailFromData(overDetail);
+                }
+            } catch (Exception e) {
+                // Skip invalid over data
+            }
+        }
+    }
+
+    // Save match summary to Firebase
+    public void saveMatchSummaryToFirebase(MatchSummaryData data) {
+        if (matchId == null || matchId.isEmpty()) {
+            Toast.makeText(this, "No match ID available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference summaryRef = mDatabase.child("matches").child(matchId).child("summary");
+        
+        // Create summary data map
+        java.util.HashMap<String, Object> summaryMap = new java.util.HashMap<>();
+        summaryMap.put("matchResult", data.getMatchResult());
+        summaryMap.put("playerOfMatch", data.getPlayerOfMatch());
+        
+        // Save over details
+        if (data.getOverDetails() != null && !data.getOverDetails().isEmpty()) {
+            // Determine which team's overs these are
+            String oversKey = selectedTeam == 1 ? "team1Overs" : "team2Overs";
+            summaryMap.put(oversKey, data.getOverDetails());
+        }
+
+        summaryRef.updateChildren(summaryMap)
+            .addOnSuccessListener(aVoid -> {
+                Toast.makeText(MatchSummaryActivity.this, 
+                    "Match summary saved successfully", 
+                    Toast.LENGTH_SHORT).show();
+                
+                // Update match status to completed
+                mDatabase.child("matches").child(matchId).child("status").setValue("completed");
+            })
+            .addOnFailureListener(e -> {
+                Toast.makeText(MatchSummaryActivity.this, 
+                    "Failed to save summary: " + e.getMessage(), 
+                    Toast.LENGTH_SHORT).show();
+            });
     }
 
     // Method to load match summary data

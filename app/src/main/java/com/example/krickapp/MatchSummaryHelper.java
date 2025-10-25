@@ -28,6 +28,33 @@ public class MatchSummaryHelper {
     }
 
     /**
+     * Launch Match Summary Activity with match ID to load from Firebase
+     */
+    public static void launchMatchSummaryFromFirebase(AppCompatActivity activity, String matchId) {
+        Intent intent = new Intent(activity, MatchSummaryActivity.class);
+        intent.putExtra("matchId", matchId);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * Launch Match Summary Activity with match ID and basic info
+     */
+    public static void launchMatchSummary(AppCompatActivity activity, 
+                                         String matchId, 
+                                         String team1Name, 
+                                         String team2Name,
+                                         String matchResult,
+                                         String playerOfMatch) {
+        Intent intent = new Intent(activity, MatchSummaryActivity.class);
+        intent.putExtra("matchId", matchId);
+        intent.putExtra("team1Name", team1Name);
+        intent.putExtra("team2Name", team2Name);
+        intent.putExtra("matchResult", matchResult);
+        intent.putExtra("playerOfMatch", playerOfMatch);
+        activity.startActivity(intent);
+    }
+
+    /**
      * Launch Match Summary with full data including over details
      */
     public static void launchMatchSummaryWithData(AppCompatActivity activity, 
@@ -96,9 +123,17 @@ public class MatchSummaryHelper {
             "John Smith"
         );
 
-        // Option 2: Launch with full data including overs
+        // Option 2: Launch with match ID to load from Firebase
+        // String matchId = "match_123";
+        // launchMatchSummaryFromFirebase(activity, matchId);
+
+        // Option 3: Launch with full data including overs
         // MatchSummaryData data = createSampleData();
         // launchMatchSummaryWithData(activity, data);
+        
+        // Option 4: Launch with match ID and pre-loaded data
+        // launchMatchSummary(activity, "match_123", "Warriors", "Knights", 
+        //                   "Warriors won by 25 runs", "John Smith");
     }
 
     /**
