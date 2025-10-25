@@ -8,7 +8,6 @@
     android:background="#F5F5F5"
     tools:context=".MainActivity">
 
-    <!-- Scrollable content -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
@@ -27,7 +26,6 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp">
 
-            <!-- Header -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +56,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Highlights -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,50 +65,14 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <androidx.cardview.widget.CardView
+            <LinearLayout
+                android:id="@+id/highlights_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+            </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Royal Challengers vs. Kings XI"
-                        android:textSize="14sp"
-                        android:textColor="#888888" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="RCB won by 6 wickets"
-                        android:textSize="18sp"
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="12dp" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:text="View"
-                        android:textColor="#000000"
-                        android:background="@drawable/yellow_circle1"
-                        android:textAllCaps="false"
-                        android:minWidth="90dp"
-                        app:backgroundTint="#FFD600"
-                        app:cornerRadius="10dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Recent Matches -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,99 +82,14 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Recent Match 1 -->
-            <androidx.cardview.widget.CardView
+            <LinearLayout
+                android:id="@+id/recent_matches_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+            </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/recent_match_1_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Team A vs Team B"
-                        android:textSize="16sp"
-                        android:textColor="#000000"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/recent_match_1_result"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Team A won by 20 runs"
-                        android:textSize="14sp"
-                        android:textColor="#888888"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/recent_match_1_title" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Details"
-                        android:textColor="#304FFE"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Recent Match 2 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/recent_match_2_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Local Stars vs. City Strikers"
-                        android:textSize="16sp"
-                        android:textColor="#000000"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/recent_match_2_result"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Match Tied"
-                        android:textSize="14sp"
-                        android:textColor="#888888"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/recent_match_2_title" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Details"
-                        android:textColor="#304FFE"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Scheduled Matches -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -223,104 +99,16 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Scheduled Match 1 -->
-            <androidx.cardview.widget.CardView
+            <LinearLayout
+                android:id="@+id/scheduled_matches_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/scheduled_match_1_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Warriors vs. Knights"
-                        android:textSize="16sp"
-                        android:textColor="#000000"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/scheduled_match_1_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Today, 6:00 PM"
-                        android:textSize="14sp"
-                        android:textColor="#888888"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/scheduled_match_1_title" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Upcoming"
-                        android:textColor="#304FFE"
-                        android:textStyle="bold"
-                        android:padding="4dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Scheduled Match 2 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/scheduled_match_2_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Titans vs. Giants"
-                        android:textSize="16sp"
-                        android:textColor="#000000"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/scheduled_match_2_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tomorrow, 2:00 PM"
-                        android:textSize="14sp"
-                        android:textColor="#888888"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/scheduled_match_2_title" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Upcoming"
-                        android:textColor="#304FFE"
-                        android:textStyle="bold"
-                        android:padding="4dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         style="@style/Widget.App.BottomNavigationView"

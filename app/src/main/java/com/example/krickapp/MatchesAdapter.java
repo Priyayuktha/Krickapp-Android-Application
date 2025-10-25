@@ -88,22 +88,24 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
 
         public void bind(Match match, OnMatchClickListener listener) {
             tvMatchName.setText(match.getMatchName() != null ? match.getMatchName() : "Unknown Match");
-            
+
             String team1Name = "Team 1";
             String team2Name = "Team 2";
-            
-            if (match.getTeam1() != null && match.getTeam1().getName() != null) {
-                team1Name = match.getTeam1().getName();
+
+            // --- FIX APPLIED HERE: Changed getName() to getTeamName() ---
+            if (match.getTeam1() != null && match.getTeam1().getTeamName() != null) {
+                team1Name = match.getTeam1().getTeamName();
             }
-            if (match.getTeam2() != null && match.getTeam2().getName() != null) {
-                team2Name = match.getTeam2().getName();
+            if (match.getTeam2() != null && match.getTeam2().getTeamName() != null) {
+                team2Name = match.getTeam2().getTeamName();
             }
-            
+            // -----------------------------------------------------------
+
             tvTeam1.setText(team1Name);
             tvTeam2.setText(team2Name);
             tvVenue.setText(match.getVenue() != null ? match.getVenue() : "Unknown Venue");
             tvMatchType.setText(match.getMatchType() != null ? match.getMatchType() : "N/A");
-            
+
             String dateTime = "";
             if (match.getDate() != null) {
                 dateTime = match.getDate();
@@ -112,10 +114,10 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
                 dateTime += " • " + match.getTime();
             }
             tvDateTime.setText(dateTime);
-            
+
             String status = match.getStatus() != null ? match.getStatus() : "scheduled";
             tvStatus.setText(capitalize(status));
-            
+
             // Set status color
             switch (status.toLowerCase()) {
                 case "scheduled":
@@ -130,7 +132,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
                 default:
                     tvStatus.setTextColor(Color.parseColor("#888888")); // Gray
             }
-            
+
             // Click listener
             itemView.setOnClickListener(v -> {
                 if (listener != null) {

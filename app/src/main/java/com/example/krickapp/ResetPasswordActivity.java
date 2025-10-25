@@ -1,49 +1,54 @@
 package com.example.krickapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.ProgressDialog; // Import for ProgressDialog
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.util.Patterns;
 import android.view.View;
-import com.google.firebase.auth.FirebaseAuth;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
     private EditText emailInput;
     private Button b2l;
+    private Button sendInstructionsButton; // Declare button here for better scope
 
-
+    private FirebaseAuth mAuth;
+    private ProgressDialog progressDialog; // ProgressDialog declaration
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Replace 'R.layout.activity_reset_password' with the actual name of your XML layout file
         setContentView(R.layout.activity_reset_password);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
+        // Initialize ProgressDialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Sending reset instructions...");
+        progressDialog.setCancelable(false); // User cannot dismiss it easily
 
         // 1. Get references to the UI elements
         emailInput = findViewById(R.id.input_email);
-        b2l=findViewById(R.id.button);
+        b2l = findViewById(R.id.button); // Button to go back to login
+        sendInstructionsButton = findViewById(R.id.button_send_instructions);
 
-        Button sendInstructionsButton = findViewById(R.id.button_send_instructions);
-
-        // 2. Set the click listener for the button
+        // 2. Set the click listener for the main reset button
         sendInstructionsButton.setOnClickListener(v -> attemptSendInstructions());
 
-       b2l.setOnClickListener(v -> {
-           Intent intent = new Intent(ResetPasswordActivity.this, login.class);
-           startActivity(intent);
-       });
-
-
-
-
+        // Button to go back to login
+        b2l.setOnClickListener(v -> {
+            Intent intent = new Intent(ResetPasswordActivity.this, login.class);
+            startActivity(intent);
+            finish(); // Finish this activity to avoid stacking
+        });
     }
 
     /**
@@ -56,6 +61,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
+        // Validation logic (cleaner structure)
         if (email.isEmpty()) {
             emailInput.setError("This field is required");
             focusView = emailInput;
@@ -69,22 +75,29 @@ public class ResetPasswordActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            // ✅ Use FirebaseAuth to send password reset email
-            FirebaseAuth auth = FirebaseAuth.getInstance();
+            // Show progress indicator before sending request
+            progressDialog.show();
 
-            auth.sendPasswordResetEmail(email)
+            // Use the initialized mAuth instance
+            mAuth.sendPasswordResetEmail(email)
                     .addOnCompleteListener(task -> {
+                        // Dismiss the dialog once the task is complete
+                        progressDialog.dismiss();
+
                         if (task.isSuccessful()) {
                             Toast.makeText(
                                     ResetPasswordActivity.this,
                                     "Reset instructions sent to " + email,
                                     Toast.LENGTH_LONG
                             ).show();
+                            // Optional: Clear the email input after successful send
                             emailInput.setText("");
                         } else {
+                            // Provide more informative feedback from the error message
+                            String errorMessage = task.getException() != null ? task.getException().getMessage() : "Unknown error.";
                             Toast.makeText(
                                     ResetPasswordActivity.this,
-                                    "Failed to send reset email. Please check if the email exists.",
+                                    "Failed to send reset email: " + errorMessage,
                                     Toast.LENGTH_LONG
                             ).show();
                         }
