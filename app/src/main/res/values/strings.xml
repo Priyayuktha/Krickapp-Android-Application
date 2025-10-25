@@ -25,4 +25,23 @@
     <string name="warriors_vs_knights">Warriors vs. Knights</string>
     <string name="local_league_2025">Local League 2025</string>
 
+    <!-- Profile Screen -->
+    <string name="admin_profile">Admin Profile</string>
+    <string name="add_profile_picture">Add profile picture</string>
+    <string name="name">Name</string>
+    <string name="default_name">John Doe</string>
+    <string name="email">Email</string>
+    <string name="default_email">john.doe@example.com</string>
+    <string name="password">Password</string>
+    <string name="default_password">••••••••</string>
+    <string name="logout">Logout</string>
+    <string name="delete_account">Delete Account</string>
+
+    <!-- Bottom Nav -->
+    <string name="home">Home</string>
+    <string name="matches">Matches</string>
+    <string name="create">Create</string>
+    <string name="live">Live</string>
+    <string name="more">More</string>
+
 </resources>

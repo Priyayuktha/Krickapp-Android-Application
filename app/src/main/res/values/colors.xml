@@ -3,48 +3,35 @@
     <!-- Primary App Colors -->
     <color name="purple_500">#6200EE</color>
     <color name="purple_700">#3700B3</color>
-    <color name="teal_200">#03DAC5</color>
     <color name="teal_700">#018786</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
     <!-- Background and Surface -->
     <color name="background_light">#F5F5F5</color>
-    <color name="background_dark">#121212</color>
     <color name="surface_light">#FFFFFF</color>
-    <color name="surface_dark">#1E1E1E</color>
 
     <!-- Accent / App Branding -->
-    <color name="accent_orange">#FF9800</color>
-    <color name="accent_blue">#2196F3</color>
-    <color name="accent_green">#4CAF50</color>
+    <color name="accent_blue">#1976D2</color>
 
     <!-- Text Colors -->
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
     <color name="text_on_primary">#FFFFFF</color>
 
-        <!-- Default colors -->
-        <color name="purple_200">#BB86FC</color>
+    <!-- Icon Colors -->
+    <color name="icon_tint">#1C1C1E</color>
 
+    <!-- Custom keypad colors -->
+    <color name="key_yellow">#FFD600</color>
+    <color name="key_blue">#1976D2</color>
+    <color name="key_red">#D32F2F</color>
+    <color name="key_border">#CCCCCC</color>
 
-        <!-- Custom keypad colors -->
-        <color name="keyYellow">#FFD600</color>
-        <color name="keyBlue">#1976D2</color>
-        <color name="keyRed">#D32F2F</color>
-        <color name="keyWhite">#FFFFFF</color>
-        <color name="keyBorder">#CCCCCC</color>
+    <!-- Button Colors -->
+    <color name="button_yellow">#FFD600</color>
+    <color name="button_red">#D32F2F</color>
 
-        <!-- Your other colors like purple_200, teal_200, etc. will be here -->
-
-
-        <!-- ADD THIS LINE -->
-        <color name="primary_yellow">#FFEB3B</color>
-        <color name="nav_item_color">#1C1C1E</color>
-
-        <!-- You can have other colors defined as well -->
-        <!-- <color name="black">#FF000000</color> -->
-
-        <!-- <color name="white">#FFFFFFFF</color> -->
-    </resources>
-
+    <!-- Other -->
+    <color name="profile_placeholder_bg">#E0E0E0</color>
+</resources>

@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
-        android:id="@+id/navHome"
-        android:icon="@drawable/admin_ic_home"
-        android:title="Home" />
-    
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
     <item
-        android:id="@+id/navschedule"
+        android:id="@+id/navigation_matches"
         android:icon="@drawable/ic_calendar_placeholder"
-        android:title="Matches" />
-    
+        android:title="@string/matches" />
     <item
-        android:id="@+id/navCreate"
-        android:icon="@drawable/outline_add_24"
-        android:title="Create" />
-    
+        android:id="@+id/navigation_create"
+        android:icon="@drawable/admin_ic_add_circle"
+        android:title="@string/create" />
     <item
-        android:id="@+id/navLive"
-        android:icon="@drawable/outline_app_badging_24"
-        android:title="Live" />
-    
+        android:id="@+id/navigation_live"
+        android:icon="@drawable/admin_ic_live"
+        android:title="@string/live" />
     <item
-        android:id="@+id/navMore"
-        android:icon="@drawable/more"
-        android:title="More" />
-
+        android:id="@+id/navigation_more"
+        android:icon="@drawable/admin_ic_more"
+        android:title="@string/more" />
 </menu>
