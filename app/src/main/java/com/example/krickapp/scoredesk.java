@@ -152,11 +152,11 @@ public class scoredesk extends AppCompatActivity {
     private void addRuns(int runs, boolean legal) {
         totalRuns += runs;
         batsman1Runs += runs;
-        batsman1Balls++;
         bowlerRuns += runs;
         if (legal) {
             totalBalls++;
             bowlerBalls++;
+            batsman1Balls++; // Only increment for legal balls
         }
         actionStack.push(new Action(runs, false, legal));
         updateUI();
@@ -191,15 +191,14 @@ public class scoredesk extends AppCompatActivity {
             if (last.wicket) {
                 totalWickets--;
                 bowlerWickets--;
-                batsman1Balls--;
             }
             if (last.legalBall) {
                 totalBalls--;
                 bowlerBalls--;
+                batsman1Balls--; // Only decrement once for legal balls
             }
             bowlerRuns -= last.runs;
             batsman1Runs -= last.runs;
-            if (last.legalBall) batsman1Balls--;
             updateUI();
         } else {
             Toast.makeText(this, "Nothing to undo", Toast.LENGTH_SHORT).show();
@@ -213,6 +212,40 @@ public class scoredesk extends AppCompatActivity {
         tvBatsman1Stat.setText(batsman1Runs + "(" + batsman1Balls + ")");
         tvBatsman2Stat.setText(batsman2Runs + "(" + batsman2Balls + ")");
         tvBowlerStat.setText(bowlerBalls + " " + bowlerWickets + " " + bowlerRuns);
+        
+        // Save live score updates to Firebase if matchId exists
+        if (matchId != null && !matchId.isEmpty()) {
+            saveLiveScoreToFirebase();
+        }
+    }
+    
+    /**
+     * Save live score updates to Firebase for real-time tracking
+     */
+    private void saveLiveScoreToFirebase() {
+        java.util.HashMap<String, Object> scoreUpdate = new java.util.HashMap<>();
+        scoreUpdate.put("totalRuns", totalRuns);
+        scoreUpdate.put("totalWickets", totalWickets);
+        scoreUpdate.put("totalBalls", totalBalls);
+        scoreUpdate.put("overs", (totalBalls / 6) + "." + (totalBalls % 6));
+        scoreUpdate.put("batsman1Runs", batsman1Runs);
+        scoreUpdate.put("batsman1Balls", batsman1Balls);
+        scoreUpdate.put("batsman2Runs", batsman2Runs);
+        scoreUpdate.put("batsman2Balls", batsman2Balls);
+        scoreUpdate.put("bowlerRuns", bowlerRuns);
+        scoreUpdate.put("bowlerWickets", bowlerWickets);
+        scoreUpdate.put("bowlerBalls", bowlerBalls);
+        scoreUpdate.put("lastUpdated", System.currentTimeMillis());
+        
+        // Update match status to live if not already
+        mDatabase.child("matches").child(matchId).child("status").setValue("live");
+        
+        // Save live score data
+        mDatabase.child("matches").child(matchId).child("liveScore").updateChildren(scoreUpdate)
+            .addOnFailureListener(e -> {
+                // Silently handle failure - don't interrupt scoring
+                android.util.Log.e("scoredesk", "Failed to save live score: " + e.getMessage());
+            });
     }
 
     /**

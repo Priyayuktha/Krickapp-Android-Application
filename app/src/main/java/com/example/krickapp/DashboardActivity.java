@@ -34,6 +34,11 @@ public class DashboardActivity extends AppCompatActivity {
     private LinearLayout highlightsContainer;
     private LinearLayout recentMatchesContainer;
     private LinearLayout scheduledMatchesContainer;
+    
+    // Firebase listeners to clean up
+    private ValueEventListener highlightsListener;
+    private ValueEventListener recentMatchesListener;
+    private ValueEventListener scheduledMatchesListener;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -120,7 +125,7 @@ public class DashboardActivity extends AppCompatActivity {
     // ------------------------------------------------------------------
     private void loadHighlights() {
         highlightsContainer.removeAllViews();
-        mDatabase.orderByChild("status").equalTo("highlight").addValueEventListener(new ValueEventListener() {
+        highlightsListener = mDatabase.orderByChild("status").equalTo("highlight").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 highlightsContainer.removeAllViews();
@@ -148,7 +153,7 @@ public class DashboardActivity extends AppCompatActivity {
     private void loadRecentMatches() {
         recentMatchesContainer.removeAllViews();
         // Assuming "completed" matches are recent matches
-        mDatabase.orderByChild("status").equalTo("completed").addValueEventListener(new ValueEventListener() {
+        recentMatchesListener = mDatabase.orderByChild("status").equalTo("completed").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 recentMatchesContainer.removeAllViews();
@@ -175,7 +180,7 @@ public class DashboardActivity extends AppCompatActivity {
     // ------------------------------------------------------------------
     private void loadScheduledMatches() {
         scheduledMatchesContainer.removeAllViews();
-        mDatabase.orderByChild("status").equalTo("scheduled").addValueEventListener(new ValueEventListener() {
+        scheduledMatchesListener = mDatabase.orderByChild("status").equalTo("scheduled").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 scheduledMatchesContainer.removeAllViews();
@@ -666,6 +671,21 @@ public class DashboardActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         moveTaskToBack(true);
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove Firebase listeners to prevent memory leaks
+        if (highlightsListener != null && mDatabase != null) {
+            mDatabase.orderByChild("status").equalTo("highlight").removeEventListener(highlightsListener);
+        }
+        if (recentMatchesListener != null && mDatabase != null) {
+            mDatabase.orderByChild("status").equalTo("completed").removeEventListener(recentMatchesListener);
+        }
+        if (scheduledMatchesListener != null && mDatabase != null) {
+            mDatabase.orderByChild("status").equalTo("scheduled").removeEventListener(scheduledMatchesListener);
+        }
     }
 
     // ... (rest of the showLogoutDialog method)

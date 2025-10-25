@@ -11,7 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchViewHolder> {
 
@@ -34,7 +39,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
     @Override
     public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
         Match match = matchesList.get(position);
-        holder.bind(match, context);
+        holder.bind(match, context, this);
         
         // Add click listener to open appropriate screen based on match status
         holder.itemView.setOnClickListener(v -> {
@@ -92,7 +97,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
             tvMatchInfo = itemView.findViewById(R.id.tv_match_info);
         }
 
-        public void bind(Match match, Context context) {
+        public void bind(Match match, Context context, MatchesAdapter adapter) {
             String status = match.getStatus() != null ? match.getStatus().toLowerCase() : "scheduled";
             
             // Set venue
@@ -131,7 +136,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
                 
                 tvVs.setVisibility(View.VISIBLE);
                 tvMatchInfo.setVisibility(View.VISIBLE);
-                tvMatchInfo.setText("Starts in 1h 55m"); // TODO: Calculate actual time
+                tvMatchInfo.setText(adapter.calculateTimeUntilMatch(match.getDate(), match.getTime()));
                 
             } else if (status.equals("ongoing") || status.equals("live")) {
                 // Live match
@@ -149,11 +154,18 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
                 tvVs.setVisibility(View.GONE);
                 tvMatchInfo.setVisibility(View.GONE);
                 
-                // Set scores (mock data for now)
-                tvTeam1Score.setText("298-7");
-                tvTeam1Overs.setText("(47.3)");
-                tvTeam2Score.setText("156-3");
-                tvTeam2Overs.setText("(28.1)");
+                // Try to get live score from match data, fallback to mock data
+                String team1Score = "0-0";
+                String team1Overs = "(0.0)";
+                String team2Score = "0-0";
+                String team2Overs = "(0.0)";
+                
+                // TODO: Implement live score retrieval from Firebase in real-time
+                // For now, show placeholder
+                tvTeam1Score.setText(team1Score);
+                tvTeam1Overs.setText(team1Overs);
+                tvTeam2Score.setText(team2Score);
+                tvTeam2Overs.setText(team2Overs);
                 
             } else if (status.equals("completed")) {
                 // Completed match
@@ -171,12 +183,101 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
                 tvVs.setVisibility(View.GONE);
                 tvMatchInfo.setVisibility(View.GONE);
                 
-                // Set scores (mock data for now)
-                tvTeam1Score.setText("287-8");
-                tvTeam1Overs.setText("(50.0)");
-                tvTeam2Score.setText("245-10");
-                tvTeam2Overs.setText("(46.2)");
+                // Try to get final scores from match summary
+                // TODO: Implement final score retrieval from Firebase match summary
+                // For now show placeholder
+                tvTeam1Score.setText("0-0");
+                tvTeam1Overs.setText("(0.0)");
+                tvTeam2Score.setText("0-0");
+                tvTeam2Overs.setText("(0.0)");
             }
+        }
+    }
+    
+    /**
+     * Calculate time remaining until match starts
+     * @param dateStr Date in format "dd/MM/yyyy" or similar
+     * @param timeStr Time in format "HH:mm" or similar
+     * @return Formatted string like "Starts in 2h 30m" or "Starts tomorrow"
+     */
+    private String calculateTimeUntilMatch(String dateStr, String timeStr) {
+        if (dateStr == null || dateStr.equals("TBD") || timeStr == null || timeStr.equals("TBD")) {
+            return "Start time TBD";
+        }
+        
+        try {
+            // Parse the date and time
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            String dateTimeStr = dateStr + " " + timeStr;
+            Date matchDate = dateFormat.parse(dateTimeStr);
+            
+            if (matchDate == null) {
+                return "Start time TBD";
+            }
+            
+            // Calculate difference
+            long currentTime = System.currentTimeMillis();
+            long matchTime = matchDate.getTime();
+            long diffMillis = matchTime - currentTime;
+            
+            // If match is in the past
+            if (diffMillis < 0) {
+                return "Match time passed";
+            }
+            
+            // Convert to hours and minutes
+            long hours = TimeUnit.MILLISECONDS.toHours(diffMillis);
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(diffMillis) - TimeUnit.HOURS.toMinutes(hours);
+            long days = TimeUnit.MILLISECONDS.toDays(diffMillis);
+            
+            // Format the output
+            if (days > 0) {
+                if (days == 1) {
+                    return "Starts tomorrow";
+                } else if (days < 7) {
+                    return "Starts in " + days + " days";
+                } else {
+                    return "Starts on " + dateStr;
+                }
+            } else if (hours > 0) {
+                if (minutes > 0) {
+                    return "Starts in " + hours + "h " + minutes + "m";
+                } else {
+                    return "Starts in " + hours + "h";
+                }
+            } else if (minutes > 0) {
+                return "Starts in " + minutes + "m";
+            } else {
+                return "Starting soon";
+            }
+            
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Try alternative date format
+            try {
+                SimpleDateFormat altFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                String dateTimeStr = dateStr + " " + timeStr;
+                Date matchDate = altFormat.parse(dateTimeStr);
+                
+                if (matchDate != null) {
+                    long diffMillis = matchDate.getTime() - System.currentTimeMillis();
+                    if (diffMillis < 0) return "Match time passed";
+                    
+                    long hours = TimeUnit.MILLISECONDS.toHours(diffMillis);
+                    long minutes = TimeUnit.MILLISECONDS.toMinutes(diffMillis) - TimeUnit.HOURS.toMinutes(hours);
+                    
+                    if (hours > 24) {
+                        return "Starts on " + dateStr;
+                    } else if (hours > 0) {
+                        return "Starts in " + hours + "h " + minutes + "m";
+                    } else {
+                        return "Starts in " + minutes + "m";
+                    }
+                }
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+            return "Start time TBD";
         }
     }
 }
