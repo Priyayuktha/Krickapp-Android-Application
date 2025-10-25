@@ -2,9 +2,8 @@ package com.example.krickapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,25 +11,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class matchinfo extends AppCompatActivity {
+public class MoreActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNav;
     private FloatingActionButton fabCreate;
+    private LinearLayout menuAdminProfile, menuAbout, menuTerms, menuSupport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.matchinfo);
+        setContentView(R.layout.activity_more);
 
-        // Back button
-        ImageView btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(v -> finish());
+        // Initialize views
+        menuAdminProfile = findViewById(R.id.menu_admin_profile);
+        menuAbout = findViewById(R.id.menu_about);
+        menuTerms = findViewById(R.id.menu_terms);
+        menuSupport = findViewById(R.id.menu_support);
 
         // Setup bottom navigation
         bottomNav = findViewById(R.id.bottom_nav);
         fabCreate = findViewById(R.id.fab_create);
         
-        bottomNav.setSelectedItemId(R.id.navigation_matches);
+        bottomNav.setSelectedItemId(R.id.navigation_more);
         
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -50,8 +52,6 @@ public class matchinfo extends AppCompatActivity {
                 Toast.makeText(this, "Live matches", Toast.LENGTH_SHORT).show();
                 return false;
             } else if (itemId == R.id.navigation_more) {
-                startActivity(new Intent(this, MoreActivity.class));
-                finish();
                 return true;
             }
             return false;
@@ -61,24 +61,21 @@ public class matchinfo extends AppCompatActivity {
             startActivity(new Intent(this, create_match.class));
         });
 
-        // Setup rows with icons + text
-        setupRow(R.id.rowMatchType, R.drawable.matchtype, "Match Type", "T20");
-        setupRow(R.id.rowDate, R.drawable.date, "Date", "28 August 2025");
-        setupRow(R.id.rowTime, R.drawable.time, "Time", "6:00 PM (IST)");
-        setupRow(R.id.rowVenue, R.drawable.venue, "Venue", "Green Park Stadium");
-        setupRow(R.id.rowCity, R.drawable.city, "City", "Kanpur");
-        setupRow(R.id.rowToss, R.drawable.toos, "Toss Win", "Team A choose Batting");
-        setupRow(R.id.rowHost, R.drawable.host, "Host", "Local Cricket Association");
-    }
+        // Menu click listeners
+        menuAdminProfile.setOnClickListener(v -> {
+            startActivity(new Intent(this, UserProfileActivity.class));
+        });
 
-    private void setupRow(int rowId, int iconRes, String label, String value) {
-        LinearLayout row = findViewById(rowId);
-        ImageView icon = row.findViewById(R.id.rowIcon);
-        TextView lbl = row.findViewById(R.id.rowLabel);
-        TextView val = row.findViewById(R.id.rowValue);
+        menuAbout.setOnClickListener(v -> {
+            startActivity(new Intent(this, AboutActivity.class));
+        });
 
-        icon.setImageResource(iconRes);
-        lbl.setText(label);
-        val.setText(value);
+        menuTerms.setOnClickListener(v -> {
+            startActivity(new Intent(this, TermsActivity.class));
+        });
+
+        menuSupport.setOnClickListener(v -> {
+            Toast.makeText(this, "Support: support@krickapp.com", Toast.LENGTH_LONG).show();
+        });
     }
 }

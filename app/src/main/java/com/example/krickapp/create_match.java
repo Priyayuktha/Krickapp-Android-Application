@@ -64,8 +64,9 @@ public class create_match extends AppCompatActivity {
                 Toast.makeText(this, "Live matches coming soon", Toast.LENGTH_SHORT).show();
                 return false;
             } else if (itemId == R.id.navigation_more) {
-                Toast.makeText(this, "More options coming soon", Toast.LENGTH_SHORT).show();
-                return false;
+                startActivity(new Intent(this, MoreActivity.class));
+                finish();
+                return true;
             }
             return false;
         });

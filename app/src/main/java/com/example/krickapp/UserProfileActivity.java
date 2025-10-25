@@ -62,8 +62,13 @@ public class UserProfileActivity extends AppCompatActivity {
             } else if (itemId == R.id.navigation_create) {
                 startActivity(new Intent(UserProfileActivity.this, create_match.class));
                 return true;
+            } else if (itemId == R.id.navigation_live) {
+                Toast.makeText(this, "Live matches coming soon", Toast.LENGTH_SHORT).show();
+                return false;
+            } else if (itemId == R.id.navigation_more) {
+                startActivity(new Intent(UserProfileActivity.this, MoreActivity.class));
+                return true;
             }
-            // Add logic for other nav items (Live and More)
             return false;
         });
     }

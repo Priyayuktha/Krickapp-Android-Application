@@ -111,20 +111,25 @@ public class TeamDetailsActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
-            // Assuming R.id.navHome is the ID for the Home icon in your bottom_nav_menu
             if (itemId == R.id.navigation_home) {
                 Intent homeIntent = new Intent(TeamDetailsActivity.this, DashboardActivity.class);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(homeIntent);
-                finish(); // Close this activity
+                finish();
                 return true;
-            }
-            // Handle other navigation items here (e.g., navschedule, navCreate, etc.)
-            else if (itemId == R.id.navigation_matches) {
+            } else if (itemId == R.id.navigation_matches) {
                 startActivity(new Intent(TeamDetailsActivity.this, MatchesListActivity.class));
                 return true;
+            } else if (itemId == R.id.navigation_create) {
+                // Already in match creation flow
+                return true;
+            } else if (itemId == R.id.navigation_live) {
+                Toast.makeText(this, "Live matches coming soon", Toast.LENGTH_SHORT).show();
+                return false;
+            } else if (itemId == R.id.navigation_more) {
+                startActivity(new Intent(TeamDetailsActivity.this, MoreActivity.class));
+                return true;
             }
-            // For 'Create' icon, you are already in the match creation flow, so ignore or show a Toast.
 
             return false;
         });

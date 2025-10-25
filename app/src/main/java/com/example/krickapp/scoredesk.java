@@ -1,5 +1,6 @@
 package com.example.krickapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,11 +9,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Stack;
 
 public class scoredesk extends AppCompatActivity {
 
     private TextView tvScore, tvOvers, tvBatsman1, tvBatsman1Stat, tvBatsman2, tvBatsman2Stat, tvBowler, tvBowlerStat;
+    private BottomNavigationView bottomNav;
+    private FloatingActionButton fab;
 
     // Match State
     private int totalRuns = 0, totalWickets = 0, totalBalls = 0, maxOvers = 10;
@@ -37,6 +43,8 @@ public class scoredesk extends AppCompatActivity {
         tvBatsman2Stat = findViewById(R.id.tvBatsman2Stat);
         tvBowler = findViewById(R.id.tvBowler);
         tvBowlerStat = findViewById(R.id.tvBowlerStat);
+        bottomNav = findViewById(R.id.bottom_nav);
+        fab = findViewById(R.id.fab_create);
 
         // Keypad buttons
         setRunButton(R.id.btn0, 0);
@@ -56,6 +64,37 @@ public class scoredesk extends AppCompatActivity {
         findViewById(R.id.btnEndMatch).setOnClickListener(v ->
                 Toast.makeText(this, "Match Ended!", Toast.LENGTH_SHORT).show()
         );
+
+        // Bottom Navigation
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(this, DashboardActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_matches) {
+                startActivity(new Intent(this, MatchesListActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_create) {
+                startActivity(new Intent(this, create_match.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_live) {
+                Toast.makeText(this, "Live matches", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (itemId == R.id.navigation_more) {
+                startActivity(new Intent(this, MoreActivity.class));
+                finish();
+                return true;
+            }
+            return false;
+        });
+
+        // FAB
+        fab.setOnClickListener(v -> {
+            startActivity(new Intent(this, create_match.class));
+        });
 
         updateUI();
     }

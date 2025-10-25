@@ -83,7 +83,7 @@ public class DashboardActivity extends AppCompatActivity {
                 Toast.makeText(DashboardActivity.this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.navigation_more) {
-                Toast.makeText(DashboardActivity.this, "More", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(DashboardActivity.this, MoreActivity.class));
                 return true;
             }
             return false;

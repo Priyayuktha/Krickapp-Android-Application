@@ -115,7 +115,7 @@ public class matchresult extends AppCompatActivity {
                 Toast.makeText(this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (id == R.id.navigation_more) {
-                Toast.makeText(this, "More", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(matchresult.this, MoreActivity.class));
                 return true;
             }
             return false;

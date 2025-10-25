@@ -88,7 +88,7 @@ public class tossresult extends AppCompatActivity {
                 Toast.makeText(this, "Live Scoring - Coming Soon", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (id == R.id.navigation_more) {
-                Toast.makeText(this, "More", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(tossresult.this, MoreActivity.class));
                 return true;
             }
 

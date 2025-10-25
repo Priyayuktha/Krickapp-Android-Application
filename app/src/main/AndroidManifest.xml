@@ -29,6 +29,9 @@
             android:label="Team Details" />
         <activity android:name=".MatchesListActivity" />
         <activity android:name=".UserProfileActivity" android:exported="false" android:label="User Profile" />
+        <activity android:name=".MoreActivity" android:exported="false" android:label="More" />
+        <activity android:name=".AboutActivity" android:exported="false" android:label="About" />
+        <activity android:name=".TermsActivity" android:exported="false" android:label="Terms &amp; Conditions" />
     </application>
 
 </manifest>
