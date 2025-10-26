@@ -66,8 +66,9 @@ matches where digital coverage is usually missing.
 -   **Mayura Patkar**
 -   **Abhishek Shetty**
 -   **Gauri Thakare**
--   **Biplab Bag Yadav**
 -   **Priya R**
+-   **Biplab Bag Yadav**
+  
 
 ------------------------------------------------------------------------
 
