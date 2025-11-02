@@ -56,8 +56,7 @@ matches where digital coverage is usually missing.
 
 ## 📸 Screenshots (Add Later)
 
-> *(Place your app screenshots here for better visibility --- UI of
-> Home, Scorer's Desk, and Matches page.)*
+> <img width="1656" height="3584" alt="home_light (1)" src="https://github.com/user-attachments/assets/599bae37-34ea-473c-9314-3aad558a7662" />
 
 ------------------------------------------------------------------------
 
