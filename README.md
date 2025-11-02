@@ -57,7 +57,7 @@ matches where digital coverage is usually missing.
 ## 📸 Screenshots (Add Later)
 
 > <img width="400" height="896" alt="home_light (1)" src="https://github.com/user-attachments/assets/599bae37-34ea-473c-9314-3aad558a7662" />
-><img width="414" height="896" alt="updatescore 2" src="https://github.com/user-attachments/assets/8e83c696-e149-413a-a631-cd9aa969a7c2" />
+><img width="400" height="896" alt="updatescore 2" src="https://github.com/user-attachments/assets/8e83c696-e149-413a-a631-cd9aa969a7c2" />
 ><img width="400" height="896" alt="summary 2" src="https://github.com/user-attachments/assets/b692505a-f9ae-44ed-ac10-1d0900542458" />
 ><img width="400" height="896" alt="matches_c 1" src="https://github.com/user-attachments/assets/f546e24c-4c7b-4d9b-92c2-62153a56d284" />
 ><img width="400" height="896" alt="matches_l 1" src="https://github.com/user-attachments/assets/cb4c11d4-29c4-4570-8e26-f04b9918afb0" />
